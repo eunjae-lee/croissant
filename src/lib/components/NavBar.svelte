@@ -1,24 +1,24 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { Deck } from '$lib/types';
 
-	const MENU_ITEMS = [
+	export let deck: Deck | undefined = undefined;
+
+	let menuItems = [
 		{
-			href: '/subjects',
-			title: 'Subjects'
+			href: '/decks',
+			title: 'Decks',
+			active: $page.url.pathname === '/decks'
+		},
+		deck && {
+			href: $page.url.pathname,
+			title: deck.name,
+			active: true
 		}
-		// {
-		// 	href: '/subjects',
-		// 	title: 'Play Quiz'
-		// }
-	];
-
-	$: menuItems = MENU_ITEMS.map((item) => ({
-		...item,
-		active: $page.url.pathname === item.href
-	}));
+	].filter(Boolean);
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar">
 	<div class="flex-1">
 		<a href="/" class="btn btn-ghost normal-case text-xl">🥐</a>
 	</div>

@@ -11,7 +11,7 @@
 	}
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar">
 	<div class="flex-1">
 		<a href="/" class="btn btn-ghost normal-case text-xl">🥐</a>
 	</div>

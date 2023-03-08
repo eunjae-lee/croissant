@@ -22,7 +22,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	};
 
 	// protect requests to all routes that start with /protected-routes
-	if (event.url.pathname.startsWith('/subjects')) {
+	if (event.url.pathname.startsWith('/decks')) {
 		const session = await event.locals.getSession();
 		if (!session) {
 			// the user is not signed in

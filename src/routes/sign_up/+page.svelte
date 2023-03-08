@@ -6,19 +6,22 @@
 
 	let email: string;
 	let password: string;
+	let submitting: boolean;
 
 	async function onSubmit() {
+		submitting = true;
 		const { error } = await data.supabase.auth.signUp({
 			email,
 			password
 		});
 		if (!error) {
-			goto('/subjects');
+			goto('/decks');
 		}
+		submitting = false;
 	}
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar">
 	<div class="flex-1">
 		<a href="/" class="btn btn-ghost normal-case text-xl">🥐</a>
 	</div>
@@ -44,7 +47,12 @@
 				minlength="12"
 			/>
 			<div class="card-actions justify-center">
-				<button type="submit" class="btn btn-primary">Sign Up</button>
+				<button
+					type="submit"
+					class="btn btn-primary"
+					class:loading={submitting}
+					disabled={submitting}>Sign Up</button
+				>
 			</div>
 			<a href="/sign_in" class="link link-info text-center">(If you've signed up)</a>
 		</div>
