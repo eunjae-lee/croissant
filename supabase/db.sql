@@ -1,3 +1,27 @@
+-- accounts
+create table accounts (
+  id uuid not null primary key default uuid_generate_v4(),
+  user_id uuid references auth.users not null,
+  token uuid unique not null default uuid_generate_v4(),
+  created_ts TIMESTAMP WITH TIME ZONE not null default now(),
+  updated_ts TIMESTAMP WITH TIME ZONE
+);
+alter table accounts enable row level security;
+create policy "Can view own account." on accounts for select using (auth.uid() = user_id);
+
+create function public.handle_new_user() 
+returns trigger as $$
+begin
+  insert into public.accounts (user_id)
+  values (new.id);
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
 -- decks
 
 create table decks (
