@@ -47,21 +47,21 @@
 
 <NavBar deck={data.deck} />
 
-<div class="mt-8 px-8 flex justify-center">
+<div class="mt-8 px-4 sm:px-8 flex justify-center">
 	<form
 		class="card w-full sm:w-[32rem] md:w-[48rem] bg-base-100 shadow-xl"
 		on:submit|preventDefault={onSubmit}
 	>
-		<div class="card-body gap-8">
+		<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
 			<textarea
 				bind:this={frontElem}
-				class="textarea textarea-bordered text-3xl h-36"
+				class="textarea textarea-bordered text-xl h-24 sm:text-3xl sm:h-36"
 				placeholder="Front"
 				bind:value={front}
 				required
 			/>
 			<textarea
-				class="textarea textarea-bordered text-3xl h-36"
+				class="textarea textarea-bordered text-xl h-24 sm:text-3xl sm:h-36"
 				placeholder="Back"
 				bind:value={back}
 				required
@@ -69,7 +69,7 @@
 			<div class="card-actions justify-center">
 				<button
 					type="submit"
-					class="btn btn-primary w-full text-2xl py-8 h-[initial]"
+					class="btn btn-primary w-full text-lg py-4 sm:text-2xl sm:py-8 h-[initial]"
 					class:loading={status === 'submitting'}
 					disabled={status === 'submitting'}>Add</button
 				>
