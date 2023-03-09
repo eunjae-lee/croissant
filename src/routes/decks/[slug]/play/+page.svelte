@@ -13,7 +13,7 @@
 
 {#if currentIndex < data.cards.length}
 	<Play
-		card={{ ...data.cards[currentIndex], back: 'Je suis {{avec}} elle.' }}
+		card={{ ...data.cards[currentIndex] }}
 		onNext={() => {
 			currentIndex += 1;
 			if (currentIndex === data.cards.length) {
