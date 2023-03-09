@@ -130,3 +130,24 @@ create trigger on_card_before_update
   before update on public.cards
   for each row execute procedure public.tidy_card_before_update();
 
+-- plays
+
+create table plays (
+  id uuid not null primary key default uuid_generate_v4(),
+  user_id uuid references auth.users not null,
+  card_id uuid references public.cards not null,
+  score integer,
+  created_ts TIMESTAMP WITH TIME ZONE not null default now()
+);
+
+alter table
+  plays enable row level security;
+
+create policy "Can create own plays." on plays for
+insert
+  with check (auth.uid() = user_id);
+
+create policy "Can view own plays." on plays for
+select
+  using (auth.uid() = user_id);
+

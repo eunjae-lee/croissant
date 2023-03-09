@@ -53,6 +53,7 @@
 		on:submit|preventDefault={onSubmit}
 	>
 		<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
+			<div class="badge badge-outline">Front</div>
 			<textarea
 				bind:this={frontElem}
 				class="textarea textarea-bordered text-xl h-24 sm:text-3xl sm:h-36"
@@ -60,6 +61,7 @@
 				bind:value={front}
 				required
 			/>
+			<div class="mt-4 badge badge-outline">Back</div>
 			<textarea
 				class="textarea textarea-bordered text-xl h-24 sm:text-3xl sm:h-36"
 				placeholder="Back"

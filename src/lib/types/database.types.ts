@@ -34,6 +34,29 @@ export interface Database {
   }
   public: {
     Tables: {
+      accounts: {
+        Row: {
+          created_ts: string
+          id: string
+          token: string
+          updated_ts: string | null
+          user_id: string
+        }
+        Insert: {
+          created_ts?: string
+          id?: string
+          token?: string
+          updated_ts?: string | null
+          user_id: string
+        }
+        Update: {
+          created_ts?: string
+          id?: string
+          token?: string
+          updated_ts?: string | null
+          user_id?: string
+        }
+      }
       cards: {
         Row: {
           back: string
@@ -86,6 +109,29 @@ export interface Database {
           name?: string
           slug?: string
           updated_ts?: string | null
+          user_id?: string
+        }
+      }
+      plays: {
+        Row: {
+          card_id: string
+          created_ts: string
+          id: string
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          card_id: string
+          created_ts?: string
+          id?: string
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          card_id?: string
+          created_ts?: string
+          id?: string
+          score?: number | null
           user_id?: string
         }
       }

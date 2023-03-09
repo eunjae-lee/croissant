@@ -35,7 +35,11 @@
 					<li><a>Submenu 2</a></li>
 				</ul>
 			</li> -->
-			<li><a href="/sign_in">Sign In</a></li>
+			{#if data.session}
+				<li><a href="/decks">Decks</a></li>
+			{:else}
+				<li><a href="/sign_in">Sign In</a></li>
+			{/if}
 		</ul>
 	</div>
 </div>

@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/eunjae/.asdf/installs/nodejs/16.18.1/bin/node /opt/homebrew/Cellar/yarn/1.22.19/libexec/bin/yarn.js add @types/hotkeys-js -D -E
+  /Users/eunjae/.asdf/installs/nodejs/16.18.1/bin/node /opt/homebrew/Cellar/yarn/1.22.19/libexec/bin/yarn.js add @types/js-confetti
 
 PATH: 
   /Users/eunjae/.asdf/plugins/nodejs/shims:/Users/eunjae/.asdf/installs/nodejs/16.18.1/bin:/Users/eunjae/.pyenv/shims:/Users/eunjae/.bun/bin:/Users/eunjae/.asdf/shims:/opt/homebrew/opt/asdf/libexec/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/eunjae/.bun/bin:/opt/homebrew/bin:/opt/homebrew/sbin
@@ -14,7 +14,7 @@ Platform:
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fhotkeys-js: Not found
+  Error: https://registry.yarnpkg.com/@types%2fjs-confetti: Not found
       at Request.params.callback [as _callback] (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:66145:18)
       at Request.self.callback (/opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:140890:22)
       at Request.emit (node:events:513:28)
@@ -71,7 +71,7 @@ npm manifest:
   	"dependencies": {
   		"@supabase/auth-helpers-sveltekit": "^0.9.0",
   		"@supabase/supabase-js": "2.7.1",
-  		"hotkeys-js": "^3.10.1"
+  		"js-confetti": "^0.11.0"
   	}
   }
 
@@ -1275,11 +1275,6 @@ Lockfile:
     dependencies:
       function-bind "^1.1.1"
   
-  hotkeys-js@^3.10.1:
-    version "3.10.1"
-    resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.10.1.tgz#0c67e72298f235c9200e421ab112d156dc81356a"
-    integrity sha512-mshqjgTqx8ee0qryHvRgZaZDxTwxam/2yTQmQlqAWS3+twnq1jsY9Yng9zB7lWq6WRrjTbTOc7knNwccXQiAjQ==
-  
   ignore@^5.2.0:
     version "5.2.4"
     resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
@@ -1371,6 +1366,11 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
     integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
+  
+  js-confetti@^0.11.0:
+    version "0.11.0"
+    resolved "https://registry.yarnpkg.com/js-confetti/-/js-confetti-0.11.0.tgz#5eb56dc23cba54be98b71afdc69a28bec61880a2"
+    integrity sha512-Hc7I3VI4r4H0nq5q/oQK+JJwGoYRYVHK72fGk8E9Ay1dbh+aiZ9yl0yFp1K4oYeq7YFDQAndYChwqLPA3QWQuA==
   
   js-sdsl@^4.1.4:
     version "4.3.0"
