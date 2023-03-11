@@ -3,6 +3,7 @@
 	import NavBar from '$lib/components/NavBar.svelte';
 	import Play from '$lib/components/Play.svelte';
 	import type { PageData } from './$types';
+	import Congrats from '$lib/components/Congrats.svelte';
 
 	export let data: PageData;
 	let userId = data.session!.user.id;
@@ -13,6 +14,7 @@
 
 {#if currentIndex < data.cards.length}
 	<Play
+		counter={`${currentIndex + 1}/${data.cards.length}`}
 		card={{ ...data.cards[currentIndex] }}
 		onNext={() => {
 			currentIndex += 1;
@@ -28,4 +30,8 @@
 			});
 		}}
 	/>
+{:else}
+	<div class="mt-8">
+		<Congrats />
+	</div>
 {/if}
