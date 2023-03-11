@@ -7,10 +7,12 @@
 
 	export let data: PageData;
 
+	let showingToken: boolean = false;
+
 	$: headers = JSON.stringify(
 		{
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${data.deck.token}`
+			Authorization: `Bearer ${showingToken ? data.deck.token : '*********'}`
 		},
 		null,
 		2
@@ -19,7 +21,7 @@
 		{
 			cards: [
 				{
-					front: 'hello',
+					front: 'Hello',
 					back: 'Bonjour'
 				},
 				{
@@ -50,8 +52,15 @@
 					<p class="mt-4 text-sm">Method</p>
 					<div><code>POST</code></div>
 					<p class="mt-4 text-sm">Headers</p>
-					<div>
+					<div class="relative">
 						<pre>{headers}</pre>
+						<button
+							class="btn btn-ghost btn-xs absolute top-1 right-1"
+							type="button"
+							on:click={() => {
+								showingToken = !showingToken;
+							}}>{showingToken ? 'Hide token' : 'Show token'}</button
+						>
 					</div>
 					<p class="mt-4 text-sm">Body</p>
 					<div>
