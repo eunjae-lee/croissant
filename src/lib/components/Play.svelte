@@ -77,7 +77,7 @@
 					</div>
 					<hr />
 					<div class="badge badge-outline">Back</div>
-					<div class="text-xl sm:text-2xl" class:blur-sm={status === 'init'}>
+					<div class="text-xl sm:text-2xl" class:blur-md={status === 'init'}>
 						{#if hasSomethingToReveal}
 							{#if status === 'revealed'}
 								{#each stringSplitWithCloze as item}
@@ -92,7 +92,7 @@
 									{#if item.type === 'text'}
 										<span>{item.content}</span>
 									{:else if item.type === 'cloze'}
-										<span class="blur-sm">{item.content}</span>
+										<span class="blur-md">{item.content}</span>
 									{/if}
 								{/each}
 							{/if}
