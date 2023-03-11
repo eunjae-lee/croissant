@@ -13,6 +13,14 @@ describe('cloze', () => {
 			}
 		]);
 
+		expect(splitStringWithCloze('{{hello}} world')).toEqual([
+			{ content: 'hello', type: 'cloze' },
+			{
+				content: ' world',
+				type: 'text'
+			}
+		]);
+
 		expect(splitStringWithCloze('hello {{world}} hi')).toEqual([
 			{ content: 'hello ', type: 'text' },
 			{

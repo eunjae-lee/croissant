@@ -16,10 +16,12 @@ export function splitStringWithCloze(text: string): StringsSplitWithCloze {
 		if (closingIndex === -1) {
 			break;
 		}
-		result.push({
-			content: text.slice(startingIndex, openingIndex),
-			type: 'text'
-		});
+		if (startingIndex < openingIndex) {
+			result.push({
+				content: text.slice(startingIndex, openingIndex),
+				type: 'text'
+			});
+		}
 		result.push({
 			content: text.slice(openingIndex + 2, closingIndex),
 			type: 'cloze'
