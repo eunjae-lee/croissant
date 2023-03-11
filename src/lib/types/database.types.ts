@@ -92,6 +92,7 @@ export interface Database {
           id: string
           name: string
           slug: string
+          token: string
           updated_ts: string | null
           user_id: string
         }
@@ -100,6 +101,7 @@ export interface Database {
           id?: string
           name: string
           slug?: string
+          token?: string
           updated_ts?: string | null
           user_id: string
         }
@@ -108,6 +110,7 @@ export interface Database {
           id?: string
           name?: string
           slug?: string
+          token?: string
           updated_ts?: string | null
           user_id?: string
         }

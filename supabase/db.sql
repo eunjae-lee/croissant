@@ -40,6 +40,8 @@ create table decks (
 alter table
   decks enable row level security;
 
+alter table decks add column token uuid unique not null default uuid_generate_v4();
+
 create policy "Can create own decks." on decks for
 insert
   with check (auth.uid() = user_id);

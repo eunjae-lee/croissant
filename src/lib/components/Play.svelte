@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Card } from '$lib/types';
 	import { splitStringWithCloze } from '$lib/utils';
+	import Container from './Container.svelte';
 
 	export let counter: string;
 	export let card: Card;
@@ -20,8 +21,8 @@
 	}
 </script>
 
-<div class="mt-8 px-4 sm:px-8 flex justify-center">
-	<div class="w-full sm:w-[32rem] md:w-[48rem]">
+<div class="mt-8">
+	<Container>
 		<div class="badge badge-outline">{counter}</div>
 		<div class="mt-2 card bg-base-100 shadow-xl">
 			<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
@@ -102,5 +103,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</Container>
 </div>

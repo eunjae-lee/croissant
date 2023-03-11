@@ -1,3 +1,4 @@
+const typography = require('@tailwindcss/typography');
 const daisyui = require('daisyui');
 
 const config = {
@@ -7,7 +8,7 @@ const config = {
 		extend: {}
 	},
 
-	plugins: [daisyui]
+	plugins: [typography, daisyui]
 };
 
 module.exports = config;
