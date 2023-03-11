@@ -9,7 +9,13 @@ export const load: PageLoad = async ({ params, parent }) => {
 	if (!deck) {
 		throw error(404);
 	}
-	const { data: cards } = await supabase.from('cards').select('*').eq('deck_id', deck.id).limit(10);
+	const { data: cards } = await supabase
+		.from('cards')
+		.select('*')
+		.eq('deck_id', deck.id)
+		.eq('learn', true)
+		.lte('box', 5)
+		.lte('next_play_ts', new Date().toISOString());
 
 	return { deck, cards: cards || [] };
 };

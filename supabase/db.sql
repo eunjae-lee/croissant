@@ -95,6 +95,18 @@ create table cards (
 alter table
   cards enable row level security;
 
+alter table
+  cards add column learn boolean not null default true;
+
+alter table
+  cards add column box smallint not null default 1;
+
+alter table
+  cards add column last_played_ts TIMESTAMP WITH TIME ZONE;
+
+alter table
+  cards add column next_play_ts TIMESTAMP WITH TIME ZONE default now();
+
 create policy "Can create own cards." on cards for
 insert
   with check (auth.uid() = user_id);
@@ -131,25 +143,4 @@ $$ language plpgsql security definer;
 create trigger on_card_before_update
   before update on public.cards
   for each row execute procedure public.tidy_card_before_update();
-
--- plays
-
-create table plays (
-  id uuid not null primary key default uuid_generate_v4(),
-  user_id uuid references auth.users not null,
-  card_id uuid references public.cards not null,
-  score integer,
-  created_ts TIMESTAMP WITH TIME ZONE not null default now()
-);
-
-alter table
-  plays enable row level security;
-
-create policy "Can create own plays." on plays for
-insert
-  with check (auth.uid() = user_id);
-
-create policy "Can view own plays." on plays for
-select
-  using (auth.uid() = user_id);
 

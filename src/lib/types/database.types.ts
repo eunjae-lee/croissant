@@ -60,28 +60,40 @@ export interface Database {
       cards: {
         Row: {
           back: string
+          box: number
           created_ts: string
           deck_id: string
           front: string
           id: string
+          last_played_ts: string | null
+          learn: boolean
+          next_play_ts: string | null
           updated_ts: string | null
           user_id: string
         }
         Insert: {
           back: string
+          box?: number
           created_ts?: string
           deck_id: string
           front: string
           id?: string
+          last_played_ts?: string | null
+          learn?: boolean
+          next_play_ts?: string | null
           updated_ts?: string | null
           user_id: string
         }
         Update: {
           back?: string
+          box?: number
           created_ts?: string
           deck_id?: string
           front?: string
           id?: string
+          last_played_ts?: string | null
+          learn?: boolean
+          next_play_ts?: string | null
           updated_ts?: string | null
           user_id?: string
         }
