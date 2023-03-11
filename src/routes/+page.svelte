@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { Session } from '@supabase/supabase-js';
+	import { Globe, Twitter, Youtube } from 'lucide-svelte';
 
 	export let data: PageData;
 
@@ -43,3 +43,37 @@
 		</ul>
 	</div>
 </div>
+
+<div class="hero">
+	<div class="hero-content text-center">
+		<div class="max-w-md">
+			<h1 class="text-5xl font-bold">🥐 Croissant</h1>
+			<p class="mt-12 text-lg">
+				Maximize your study sessions with Croissant - the simple flash card app featuring spaced
+				repetition algorithm!
+			</p>
+			<div class="mt-2 text-sm">
+				We also provide REST APIs to create cards for those who are tech-savvy.
+			</div>
+			<a href="/sign_up" class="mt-6 btn btn-lg btn-primary">Get Started</a>
+		</div>
+	</div>
+</div>
+
+<footer class="fixed bottom-0 footer items-center p-4 flex justify-between">
+	<div class="items-center grid-flow-col">
+		<span class="text-lg">🥐</span>
+		<p>Copyright © {new Date().getFullYear()} - All right reserved</p>
+	</div>
+	<div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
+		<a class="hover:opacity-75" href="https://eunjae.dev"><Globe /></a>
+		<a class="hover:opacity-75" href="https://twitter.com/eunjae-lee"><Twitter /></a>
+		<a class="hover:opacity-75" href="https://youtube.com/@learnwitheunjae"><Youtube /></a>
+	</div>
+</footer>
+
+<style>
+	.hero {
+		height: calc(100vh - 8rem);
+	}
+</style>
