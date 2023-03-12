@@ -63,7 +63,7 @@
 <footer class="fixed bottom-0 footer items-center p-4 flex justify-between">
 	<div class="items-center grid-flow-col">
 		<span class="text-lg">🥐</span>
-		<p>Copyright © {new Date().getFullYear()} - All right reserved</p>
+		<p>Copyright © {new Date().getFullYear()}</p>
 	</div>
 	<div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
 		<a class="hover:opacity-75" href="https://eunjae.dev"><Globe /></a>
