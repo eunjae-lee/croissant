@@ -39,7 +39,7 @@
 
 <div class="mt-8">
 	<Container>
-		<div class="card w-full bg-base-100 shadow-xl">
+		<div class="card w-full bg-base-100 shadow-xl mb-16 pt-4 pb-8">
 			<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
 				<div>
 					<h2 class="text-xl">API Reference</h2>
@@ -66,6 +66,36 @@
 					<div>
 						<pre>{requestBody}</pre>
 					</div>
+					<h2 class="mt-8 text-xl">Shortcuts</h2>
+					<p class="mt-2">
+						To simplify the process of adding cards, <a
+							target="_blank"
+							rel="noopener noreferrer"
+							href="https://support.apple.com/lt-lt/guide/shortcuts/welcome/ios">Shortcuts</a
+						>
+						can be created on iOS or Mac. You can refer to these sample shortcuts to learn how to create
+						your own. For more examples,
+						<a href="https://routinehub.co/" rel="noopener noreferrer" target="_blank">RoutineHub</a
+						> is a helpful community resource.
+					</p>
+					<ul class="mt-4 ml-4">
+						<li>
+							<a
+								target="_blank"
+								rel="noopener noreferrer"
+								href="https://www.icloud.com/shortcuts/ac1a9179a2dd447db363c6a0f0cefdda"
+								>[Sample] Add a single flash card</a
+							>
+						</li>
+						<li>
+							<a
+								target="_blank"
+								rel="noopener noreferrer"
+								href="https://www.icloud.com/shortcuts/517c9623ebbb4599af842b2ee5c02be4"
+								>[Sample] Add multiple flash cards (Auto-translation: En → Fr)</a
+							>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -73,6 +103,14 @@
 </div>
 
 <style>
+	a {
+		@apply text-primary underline hover:opacity-75;
+	}
+
+	ul {
+		@apply list-disc;
+	}
+
 	code {
 		@apply border border-primary py-0 px-2 rounded-md text-info-content text-sm font-normal;
 	}
