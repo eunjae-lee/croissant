@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import { Info } from 'lucide-svelte';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import type { Deck } from '$lib/types';
@@ -30,6 +31,8 @@
 
 	loadDecks();
 </script>
+
+<MetaTags title="Decks | Croissant" />
 
 <NavBar />
 

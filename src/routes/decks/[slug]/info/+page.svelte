@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import Container from '$lib/components/Container.svelte';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import { API_HOST } from '$lib/const';
@@ -34,6 +35,8 @@
 		2
 	);
 </script>
+
+<MetaTags title="Info | Croissant" />
 
 <NavBar deck={data.deck} />
 

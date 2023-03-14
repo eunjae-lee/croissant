@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import Confetti from 'js-confetti';
 	import { add } from 'date-fns';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import Play from '$lib/components/Play.svelte';
 	import type { PageData } from './$types';
 	import Congrats from '$lib/components/Congrats.svelte';
-	import type { Card } from '/types';
+	import type { Card } from '$lib/types';
 
 	export let data: PageData;
 	let userId = data.session!.user.id;
@@ -53,6 +54,8 @@
 		});
 	};
 </script>
+
+<MetaTags title="Play Quiz | Croissant" />
 
 <NavBar deck={data.deck} />
 

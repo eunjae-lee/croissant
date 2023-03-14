@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
@@ -45,6 +46,8 @@
 		frontElem.focus();
 	});
 </script>
+
+<MetaTags title="Add card | Croissant" />
 
 <NavBar deck={data.deck} />
 

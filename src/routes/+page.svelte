@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import type { PageData } from './$types';
 	import { Globe, Twitter, Youtube } from 'lucide-svelte';
 
@@ -10,6 +11,11 @@
 		// loadData();
 	}
 </script>
+
+<MetaTags
+	title="Croissant"
+	description="The simple flash card app featuring spaced repetition algorithm."
+/>
 
 <div class="navbar">
 	<div class="flex-1">
@@ -49,8 +55,8 @@
 		<div class="max-w-md">
 			<h1 class="text-5xl font-bold">🥐 Croissant</h1>
 			<p class="mt-12 text-lg">
-				Maximize your study sessions with Croissant - the simple flash card app featuring spaced
-				repetition algorithm!
+				Maximize your study with Croissant - the simple flash card app featuring spaced repetition
+				algorithm!
 			</p>
 			<div class="mt-2 text-sm">
 				We also provide REST APIs to create cards for those who are tech-savvy.

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 
@@ -20,6 +21,8 @@
 		submitting = false;
 	}
 </script>
+
+<MetaTags title="Sign Up | Croissant" />
 
 <div class="navbar">
 	<div class="flex-1">
