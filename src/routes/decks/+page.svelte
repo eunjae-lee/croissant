@@ -43,7 +43,7 @@
 				<div class="card bg-base-100 shadow-xl">
 					<div class="card-body justify-between h-48">
 						<h2 class="card-title">{deck.name}</h2>
-						<div class="card-actions justify-end">
+						<div class="card-actions justify-end flex-nowrap">
 							<a href={`/decks/${deck.slug}/info`} class="btn btn-ghost"><Info /></a>
 							<a href={`/decks/${deck.slug}/add`} class="btn btn-secondary">Add Cards</a>
 							<a href={`/decks/${deck.slug}/play`} class="btn btn-primary">Play Quiz</a>
