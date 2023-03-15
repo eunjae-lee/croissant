@@ -2,14 +2,19 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import type { PageData } from './$types';
 	import { Globe, Twitter, Youtube } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { redirect } from '@sveltejs/kit';
 
 	export let data: PageData;
 
-	let { supabase, session } = data;
+	let redirectedFromAuthentication = $page.url.hash.startsWith('#access_token=');
 
-	$: if (data.session) {
-		// loadData();
-	}
+	onMount(() => {
+		if (redirectedFromAuthentication && location.hash === '') {
+			redirect(303, '/decks');
+		}
+	});
 </script>
 
 <MetaTags
