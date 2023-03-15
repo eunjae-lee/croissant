@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { MAX_BOX } from './const';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params, parent }) => {
@@ -14,7 +15,7 @@ export const load: PageLoad = async ({ params, parent }) => {
 		.select('*')
 		.eq('deck_id', deck.id)
 		.eq('learn', true)
-		.lte('box', 5)
+		.lte('box', MAX_BOX)
 		.lte('next_play_ts', new Date().toISOString());
 
 	return { deck, cards: (cards || []).sort((a, b) => a.box - b.box) };

@@ -7,6 +7,7 @@
 	import type { PageData } from './$types';
 	import Congrats from '$lib/components/Congrats.svelte';
 	import type { Card } from '$lib/types';
+	import { SPACE_PER_BOX, type BOX_NUMBER } from './const';
 
 	export let data: PageData;
 	let userId = data.session!.user.id;
@@ -16,18 +17,6 @@
 	$: if (data.cards) {
 		currentIndex = 0;
 	}
-
-	let ALPHA = 4;
-	let SPACE_PER_BOX = {
-		1: 24 * 1 - ALPHA, // almost 1 day
-		2: 24 * 2 - ALPHA, // almost 2 days
-		3: 24 * 5 - ALPHA, // almost 5 days
-		4: 24 * 8 - ALPHA, // almost 8 days
-		5: 24 * 14 - ALPHA, // almost 14 days
-		6: 0
-	};
-
-	type BOX_NUMBER = keyof typeof SPACE_PER_BOX;
 
 	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: BOX_NUMBER }) => {
 		const now = new Date();
@@ -54,7 +43,7 @@
 	const bumpDown = async ({ card }: { card: Card }) => {
 		await assignToBox({
 			cardId: card.id,
-			boxNumber: Math.min(card.box - 1, 1) as BOX_NUMBER
+			boxNumber: Math.max(card.box - 1, 1) as BOX_NUMBER
 		});
 	};
 
