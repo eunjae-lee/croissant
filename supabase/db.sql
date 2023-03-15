@@ -37,6 +37,22 @@ create table decks (
   updated_ts TIMESTAMP WITH TIME ZONE
 );
 
+alter table decks add column num_plays bigint default 0;
+alter table decks add column play_score_sum bigint default 0;
+
+create or replace function public.update_deck_score(deck_id uuid, score smallint)
+returns void as $$
+begin
+  update decks
+  set
+    num_plays = num_plays + 1,
+    play_score_sum = play_score_sum + score
+  where
+    user_id = auth.uid()
+    and id = deck_id;
+end;
+$$ language plpgsql security definer;
+
 alter table
   decks enable row level security;
 

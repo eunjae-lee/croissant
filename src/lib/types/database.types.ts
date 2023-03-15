@@ -103,6 +103,8 @@ export interface Database {
           created_ts: string
           id: string
           name: string
+          num_plays: number | null
+          play_score_sum: number | null
           slug: string
           token: string
           updated_ts: string | null
@@ -112,6 +114,8 @@ export interface Database {
           created_ts?: string
           id?: string
           name: string
+          num_plays?: number | null
+          play_score_sum?: number | null
           slug?: string
           token?: string
           updated_ts?: string | null
@@ -121,32 +125,11 @@ export interface Database {
           created_ts?: string
           id?: string
           name?: string
+          num_plays?: number | null
+          play_score_sum?: number | null
           slug?: string
           token?: string
           updated_ts?: string | null
-          user_id?: string
-        }
-      }
-      plays: {
-        Row: {
-          card_id: string
-          created_ts: string
-          id: string
-          score: number | null
-          user_id: string
-        }
-        Insert: {
-          card_id: string
-          created_ts?: string
-          id?: string
-          score?: number | null
-          user_id: string
-        }
-        Update: {
-          card_id?: string
-          created_ts?: string
-          id?: string
-          score?: number | null
           user_id?: string
         }
       }
@@ -155,7 +138,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_deck_score: {
+        Args: {
+          deck_id: string
+          score: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

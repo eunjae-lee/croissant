@@ -13,6 +13,10 @@
 	let currentIndex = 0;
 	$: currentCard = data.cards[currentIndex];
 
+	$: if (data.cards) {
+		currentIndex = 0;
+	}
+
 	let ALPHA = 4;
 	let SPACE_PER_BOX = {
 		1: 24 * 1 - ALPHA, // almost 1 day
@@ -53,6 +57,20 @@
 			boxNumber: Math.min(card.box - 1, 1) as BOX_NUMBER
 		});
 	};
+
+	const onSubmit = async (score: 1 | 2 | 3) => {
+		if (score === 1) {
+			await assignToBox({
+				cardId: currentCard.id,
+				boxNumber: 1
+			});
+		} else if (score === 2) {
+			await bumpDown({ card: currentCard });
+		} else if (score === 3) {
+			await bumpUp({ card: currentCard });
+		}
+		await data.supabase.rpc('update_deck_score', { deck_id: data.deck.id, score });
+	};
 </script>
 
 <MetaTags title="Play Quiz | Croissant" />
@@ -69,18 +87,7 @@
 				new Confetti().addConfetti();
 			}
 		}}
-		onSubmit={async (score) => {
-			if (score === 1) {
-				await assignToBox({
-					cardId: currentCard.id,
-					boxNumber: 1
-				});
-			} else if (score === 2) {
-				await bumpDown({ card: currentCard });
-			} else if (score === 3) {
-				await bumpUp({ card: currentCard });
-			}
-		}}
+		{onSubmit}
 	/>
 {:else}
 	<div class="mt-8">
