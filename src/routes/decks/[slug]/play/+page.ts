@@ -17,5 +17,5 @@ export const load: PageLoad = async ({ params, parent }) => {
 		.lte('box', 5)
 		.lte('next_play_ts', new Date().toISOString());
 
-	return { deck, cards: cards || [] };
+	return { deck, cards: (cards || []).sort((a, b) => a.box - b.box) };
 };
