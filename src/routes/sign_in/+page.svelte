@@ -5,13 +5,15 @@
 
 	export let data: PageData;
 
-	let email: string;
-	let password: string;
 	let status: 'init' | 'submitting' | 'confirming' | 'error' = 'init';
 	let errorMessage: string;
 	let logMessage: string;
 
-	async function onSubmit() {
+	async function onSubmit(event: Event) {
+		const formData = new FormData(event.target as HTMLFormElement);
+		const email = (formData.get('email') || '') as string;
+		const password = (formData.get('password') || '') as string;
+
 		status = 'submitting';
 		logMessage = `debug: signing in ${email} (${password && password.length})`;
 		const { error } = await data.supabase.auth.signInWithPassword({
@@ -44,16 +46,16 @@
 			<h2 class="card-title">Hi there 👋</h2>
 			<input
 				type="text"
+				name="email"
 				placeholder="Email"
 				class="mt-4 input input-bordered w-full max-w-xs"
-				bind:value={email}
 				required
 			/>
 			<input
 				type="password"
+				name="password"
 				placeholder="Password"
 				class="input input-bordered w-full max-w-xs"
-				bind:value={password}
 				minlength="12"
 				required
 			/>
