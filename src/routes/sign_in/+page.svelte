@@ -10,9 +10,8 @@
 	let logMessage: string;
 
 	async function onSubmit(event: Event) {
-		const formData = new FormData(event.target as HTMLFormElement);
-		const email = (formData.get('email') || '') as string;
-		const password = (formData.get('password') || '') as string;
+		const email = (event.target as HTMLFormElement).email.value;
+		const password = (event.target as HTMLFormElement).password.value;
 
 		status = 'submitting';
 		logMessage = `debug: signing in ${email} (${password && password.length})`;
