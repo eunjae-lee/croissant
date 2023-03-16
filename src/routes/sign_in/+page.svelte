@@ -13,7 +13,7 @@
 
 	async function onSubmit() {
 		status = 'submitting';
-		logMessage = `debug: signing in ${email} (${password.length})`;
+		logMessage = `debug: signing in ${email} (${password && password.length})`;
 		const { error } = await data.supabase.auth.signInWithPassword({
 			email,
 			password
