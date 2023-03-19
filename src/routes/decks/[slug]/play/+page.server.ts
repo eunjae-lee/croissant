@@ -1,10 +1,9 @@
 import { error } from '@sveltejs/kit';
 import { MAX_BOX } from './const';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = async ({ params, parent }) => {
+export const load: PageServerLoad = async ({ params, parent, locals: { supabase } }) => {
 	const { slug } = params;
-	const { supabase } = await parent();
 	const { data: decks } = await supabase.from('decks').select('*').eq('slug', slug);
 	const deck = (decks || [])[0];
 	if (!deck) {

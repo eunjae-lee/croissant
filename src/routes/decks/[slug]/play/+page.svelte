@@ -10,13 +10,9 @@
 	import { SPACE_PER_BOX, type BOX_NUMBER } from './const';
 
 	export let data: PageData;
-	let userId = data.session!.user.id;
+
 	let currentIndex = 0;
 	$: currentCard = data.cards[currentIndex];
-
-	$: if (data.cards) {
-		currentIndex = 0;
-	}
 
 	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: BOX_NUMBER }) => {
 		const now = new Date();
