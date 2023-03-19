@@ -3,7 +3,7 @@
 	import Confetti from 'js-confetti';
 	import { add } from 'date-fns';
 	import NavBar from '$lib/components/NavBar.svelte';
-	import Play from '$lib/components/Play.svelte';
+	import PlayWithBlur from '$lib/components/PlayWithBlur.svelte';
 	import type { PageData } from './$types';
 	import Congrats from '$lib/components/Congrats.svelte';
 	import type { Card } from '$lib/types';
@@ -63,7 +63,7 @@
 <NavBar deck={data.deck} />
 
 {#if currentIndex < data.cards.length}
-	<Play
+	<PlayWithBlur
 		counter={`${currentIndex + 1}/${data.cards.length}`}
 		card={currentCard}
 		onNext={() => {

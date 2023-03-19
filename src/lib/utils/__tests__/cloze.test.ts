@@ -42,5 +42,18 @@ describe('cloze', () => {
 				type: 'cloze'
 			}
 		]);
+
+		expect(splitStringWithCloze('hello {{world}}\nhey {{there}}')).toEqual([
+			{ content: 'hello ', type: 'text' },
+			{
+				content: 'world',
+				type: 'cloze'
+			},
+			{ content: '\nhey ', type: 'text' },
+			{
+				content: 'there',
+				type: 'cloze'
+			}
+		]);
 	});
 });

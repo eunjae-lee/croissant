@@ -11,7 +11,7 @@
 <div class="mt-4 flex flex-col gap-3">
 	<div class="badge badge-outline">Front</div>
 	<div class="text-xl sm:text-2xl">
-		{card.front}
+		{@html card.front.split('\n').join('<br />')}
 	</div>
 	<hr />
 	<div class="badge badge-outline">Back</div>
@@ -19,18 +19,16 @@
 		{#if hasSomethingToReveal(card)}
 			{#if status === 'revealed'}
 				{#each stringSplitWithCloze as item}
-					{#if item.type === 'text'}
-						<span>{item.content}</span>
-					{:else if item.type === 'cloze'}
-						<span>{item.content}</span>
+					{#if item.type === 'text' || item.type === 'cloze'}
+						<span>{@html item.content.split('\n').join('<br />')}</span>
 					{/if}
 				{/each}
 			{:else}
 				{#each stringSplitWithCloze as item}
 					{#if item.type === 'text'}
-						<span>{item.content}</span>
+						<span>{@html item.content.split('\n').join('<br />')}</span>
 					{:else if item.type === 'cloze'}
-						<span class="blur-md">{item.content}</span>
+						<span class="blur-md">{@html item.content.split('\n').join('<br />')}</span>
 					{/if}
 				{/each}
 			{/if}
