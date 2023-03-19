@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Card } from '$lib/types';
-	import { splitStringWithCloze } from '$lib/utils';
+	import { hasSomethingToReveal } from '$lib/utils';
+	import CardWithBlur from './CardWithBlur.svelte';
 	import Container from './Container.svelte';
 
 	export let counter: string;
@@ -9,9 +10,6 @@
 	export let onSubmit: (score: 1 | 2 | 3) => Promise<void>;
 
 	let status: 'init' | 'opened' | 'revealed' | 'submitting' = 'init';
-
-	$: hasSomethingToReveal = /{{.+}}/.test(card.back);
-	$: stringSplitWithCloze = splitStringWithCloze(card.back);
 
 	async function submit(score: 1 | 2 | 3) {
 		status = 'submitting';
@@ -32,7 +30,7 @@
 							type="button"
 							class="btn btn-primary btn-outline text-lg py-4 sm:text-xl sm:py-8 w-full h-full"
 							on:click={() => {
-								if (hasSomethingToReveal) {
+								if (hasSomethingToReveal(card)) {
 									status = 'opened';
 								} else {
 									status = 'revealed';
@@ -70,37 +68,7 @@
 						>
 					{/if}
 				</div>
-				<div class="mt-4 flex flex-col gap-3">
-					<div class="badge badge-outline">Front</div>
-					<div class="text-xl sm:text-2xl">
-						{card.front}
-					</div>
-					<hr />
-					<div class="badge badge-outline">Back</div>
-					<div class="text-xl sm:text-2xl" class:blur-md={status === 'init'}>
-						{#if hasSomethingToReveal}
-							{#if status === 'revealed'}
-								{#each stringSplitWithCloze as item}
-									{#if item.type === 'text'}
-										<span>{item.content}</span>
-									{:else if item.type === 'cloze'}
-										<span>{item.content}</span>
-									{/if}
-								{/each}
-							{:else}
-								{#each stringSplitWithCloze as item}
-									{#if item.type === 'text'}
-										<span>{item.content}</span>
-									{:else if item.type === 'cloze'}
-										<span class="blur-md">{item.content}</span>
-									{/if}
-								{/each}
-							{/if}
-						{:else}
-							{card.back}
-						{/if}
-					</div>
-				</div>
+				<CardWithBlur {card} {status} />
 			</div>
 		</div>
 	</Container>
