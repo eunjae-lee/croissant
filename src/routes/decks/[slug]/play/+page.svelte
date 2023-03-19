@@ -6,9 +6,10 @@
 	import PlayWithBlur from '$lib/components/PlayWithBlur.svelte';
 	import type { PageData } from './$types';
 	import Congrats from '$lib/components/Congrats.svelte';
-	import type { Card } from '$lib/types';
+	import type { Card, Score } from '$lib/types';
 	import { SPACE_PER_BOX, type BOX_NUMBER } from './const';
 	import Container from '$lib/components/Container.svelte';
+	import PlayWithInput from '$lib/components/PlayWithInput.svelte';
 
 	export let data: PageData;
 
@@ -45,7 +46,7 @@
 		});
 	};
 
-	const onSubmit = async (score: 1 | 2 | 3) => {
+	const onSubmit = async (score: Score) => {
 		if (score === 1) {
 			await assignToBox({
 				cardId: currentCard.id,
@@ -66,6 +67,13 @@
 				hard_mode: hardMode
 			})
 			.eq('id', data.deck.id);
+	};
+
+	const onNext = () => {
+		currentIndex += 1;
+		if (currentIndex === data.cards.length) {
+			new Confetti().addConfetti();
+		}
 	};
 </script>
 
@@ -94,16 +102,11 @@
 			</div>
 		</div>
 	</Container>
-	<PlayWithBlur
-		card={currentCard}
-		onNext={() => {
-			currentIndex += 1;
-			if (currentIndex === data.cards.length) {
-				new Confetti().addConfetti();
-			}
-		}}
-		{onSubmit}
-	/>
+	{#if hardMode}
+		<PlayWithInput card={currentCard} {onNext} {onSubmit} />
+	{:else}
+		<PlayWithBlur card={currentCard} {onNext} {onSubmit} />
+	{/if}
 {:else}
 	<div class="mt-8">
 		<Congrats />

@@ -1,16 +1,16 @@
 <script lang="ts">
-	import type { Card } from '$lib/types';
+	import type { Card, Score } from '$lib/types';
 	import { hasSomethingToReveal } from '$lib/utils';
 	import CardWithBlur from './CardWithBlur.svelte';
 	import Container from './Container.svelte';
 
 	export let card: Card;
 	export let onNext: () => void;
-	export let onSubmit: (score: 1 | 2 | 3) => Promise<void>;
+	export let onSubmit: (score: Score) => Promise<void>;
 
 	let status: 'init' | 'opened' | 'revealed' | 'submitting' = 'init';
 
-	async function submit(score: 1 | 2 | 3) {
+	async function submit(score: Score) {
 		status = 'submitting';
 		await onSubmit(score);
 		status = 'init';

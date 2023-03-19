@@ -1,4 +1,4 @@
-type StringsSplitWithCloze = Array<{
+export type StringsSplitWithCloze = Array<{
 	content: string;
 	type: 'text' | 'cloze';
 }>;
