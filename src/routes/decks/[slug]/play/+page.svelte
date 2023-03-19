@@ -8,11 +8,13 @@
 	import Congrats from '$lib/components/Congrats.svelte';
 	import type { Card } from '$lib/types';
 	import { SPACE_PER_BOX, type BOX_NUMBER } from './const';
+	import Container from '$lib/components/Container.svelte';
 
 	export let data: PageData;
 
 	let currentIndex = 0;
 	$: currentCard = data.cards[currentIndex];
+	let hardMode = data.deck.hard_mode || false;
 
 	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: BOX_NUMBER }) => {
 		const now = new Date();
@@ -56,6 +58,15 @@
 		}
 		await data.supabase.rpc('update_deck_score', { deck_id: data.deck.id, score });
 	};
+
+	const updateHardMode = async () => {
+		await data.supabase
+			.from('decks')
+			.update({
+				hard_mode: hardMode
+			})
+			.eq('id', data.deck.id);
+	};
 </script>
 
 <MetaTags title="Play Quiz | Croissant" />
@@ -63,8 +74,27 @@
 <NavBar deck={data.deck} />
 
 {#if currentIndex < data.cards.length}
+	<Container>
+		<div class="mt-8 flex justify-between items-center">
+			<div class="badge badge-outline">{`${currentIndex + 1}/${data.cards.length}`}</div>
+			<div>
+				<div class="form-control">
+					<label class="cursor-pointer label">
+						<span class="label-text mr-2 text-xs uppercase opacity-75" class:font-bold={hardMode}
+							>Hard Mode</span
+						>
+						<input
+							type="checkbox"
+							class="toggle toggle-sm"
+							bind:checked={hardMode}
+							on:change={updateHardMode}
+						/>
+					</label>
+				</div>
+			</div>
+		</div>
+	</Container>
 	<PlayWithBlur
-		counter={`${currentIndex + 1}/${data.cards.length}`}
 		card={currentCard}
 		onNext={() => {
 			currentIndex += 1;

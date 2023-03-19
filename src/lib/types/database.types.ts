@@ -101,6 +101,7 @@ export interface Database {
       decks: {
         Row: {
           created_ts: string
+          hard_mode: boolean | null
           id: string
           name: string
           num_plays: number | null
@@ -112,6 +113,7 @@ export interface Database {
         }
         Insert: {
           created_ts?: string
+          hard_mode?: boolean | null
           id?: string
           name: string
           num_plays?: number | null
@@ -123,6 +125,7 @@ export interface Database {
         }
         Update: {
           created_ts?: string
+          hard_mode?: boolean | null
           id?: string
           name?: string
           num_plays?: number | null

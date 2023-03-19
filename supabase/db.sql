@@ -39,6 +39,7 @@ create table decks (
 
 alter table decks add column num_plays bigint default 0;
 alter table decks add column play_score_sum bigint default 0;
+alter table decks add column hard_mode boolean default false;
 
 create or replace function public.update_deck_score(deck_id uuid, score smallint)
 returns void as $$
