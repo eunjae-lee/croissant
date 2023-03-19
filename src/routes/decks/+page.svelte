@@ -10,10 +10,50 @@
 	let decks: Deck[] = [];
 	let status: 'init' | 'loaded';
 
+	type CardsToPlay = {
+		[deckId: string]: {
+			today?: number;
+			tomorrow?: number;
+		};
+	};
+	let cardsToPlay: CardsToPlay = {};
+
+	type TotalCards = {
+		[deckId: string]: number;
+	};
+	let totalCards: TotalCards = {};
+
+	async function loadData() {
+		await Promise.all([loadDecks(), loadCardsToPlay(), loadTotalCards()]);
+	}
+
 	async function loadDecks() {
 		const { data: result } = await data.supabase.from('decks').select('*');
 		decks = result || [];
 		status = 'loaded';
+	}
+
+	async function loadCardsToPlay() {
+		const { data: cardsToPlayRows } = await data.supabase.rpc('cards_to_play', {
+			param_user_id: data.session!.user.id
+		});
+		cardsToPlay = (cardsToPlayRows || []).reduce<CardsToPlay>((acc, row) => {
+			if (!acc[row.r_deck_id]) {
+				acc[row.r_deck_id] = {};
+			}
+			acc[row.r_deck_id][row.r_when_to_play as 'today' | 'tomorrow'] = row.r_count;
+			return acc;
+		}, {});
+	}
+
+	async function loadTotalCards() {
+		const { data: totalCardsRows } = await data.supabase.rpc('total_cards', {
+			param_user_id: data.session!.user.id
+		});
+		totalCards = (totalCardsRows || []).reduce<TotalCards>((acc, row) => {
+			acc[row.r_deck_id] = row.r_count;
+			return acc;
+		}, {});
 	}
 
 	async function createDeck() {
@@ -29,7 +69,11 @@
 		await loadDecks();
 	}
 
-	loadDecks();
+	function formatNumber(number: number) {
+		return new Intl.NumberFormat().format(number);
+	}
+
+	loadData();
 </script>
 
 <MetaTags title="Decks | Croissant" />
@@ -41,31 +85,54 @@
 		<div class="grid gap-8 md:grid-cols-2">
 			{#each decks as deck (deck.id)}
 				<div class="card bg-base-100 shadow-xl">
-					<div class="card-body justify-between h-48">
+					<div class="card-body justify-between">
 						<h2 class="card-title flex items-center">
 							<span>{deck.name}</span>
-							<span class="font-normal text-sm"
-								>{new Intl.NumberFormat().format(deck.play_score_sum || 0)}XP</span
-							>
+							<span class="font-normal text-sm">{formatNumber(deck.play_score_sum || 0)}XP</span>
 						</h2>
-						<div class="card-actions justify-end flex-nowrap">
-							<a href={`/decks/${deck.slug}/info`} class="btn btn-ghost"><Info /></a>
+						<hr />
+						<div class="flex flex-col gap-4 my-4">
+							<div>
+								<p class="text-sm opacity-75">Total Cards</p>
+								<p class="text-2xl font-bold">
+									{totalCards[deck.id] ? formatNumber(totalCards[deck.id]) : ''}
+								</p>
+							</div>
+							<div class="grid grid-cols-2">
+								<div>
+									<p class="text-sm opacity-75">To Study Today</p>
+									<p class="text-2xl font-bold">
+										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].today || 0) : ''}
+									</p>
+								</div>
+								<div>
+									<p class="text-sm opacity-75">Tomorrow</p>
+									<p class="text-2xl font-bold">
+										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].tomorrow || 0) : ''}
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="card-actions flex-nowrap">
 							<a href={`/decks/${deck.slug}/add`} class="btn btn-secondary">Add Cards</a>
-							<a href={`/decks/${deck.slug}/play`} class="btn btn-primary">Play Quiz</a>
+							<a href={`/decks/${deck.slug}/play`} class="btn btn-primary">Play Cards</a>
+							<a href={`/decks/${deck.slug}/info`} class="btn btn-ghost"><Info /></a>
 						</div>
 					</div>
 				</div>
 			{/each}
+
 			<div class="card bg-base-100 shadow-xl">
-				<div class="card-body justify-between h-48">
+				<div class="card-body h-48 items-center justify-center gap-8">
 					{#if status === 'loaded' && decks.length === 0}
-						<h2 class="card-title">Create your first deck</h2>
+						<h2 class="card-title justify-center">Create your first deck</h2>
 					{:else}
-						<h2 class="card-title text-lg font-normal">Want to learn something else?</h2>
+						<h2 class="card-title justify-center text-lg font-normal">
+							Want to learn something else?
+						</h2>
 					{/if}
-					<div class="card-actions justify-end">
-						<button class="btn btn-primary" on:click={createDeck}>Create a deck</button>
-					</div>
+					<button class="btn btn-primary justify-center" on:click={createDeck}>Create a deck</button
+					>
 				</div>
 			</div>
 		</div>

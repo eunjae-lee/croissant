@@ -160,3 +160,52 @@ create trigger on_card_before_update
   before update on public.cards
   for each row execute procedure public.tidy_card_before_update();
 
+--
+create or replace function cards_to_play(param_user_id uuid)
+returns TABLE (
+        r_deck_id uuid,
+        r_when_to_play text,
+        r_count bigint
+) 
+AS $$
+begin
+  RETURN QUERY select 
+    deck_id, when_to_play, count(*)
+  from
+    (
+      select
+        decks.id as deck_id,
+        case
+          when cards.next_play_ts <= now() then 'today'
+          when cards.next_play_ts <= now() + interval '1 day' then 'tomorrow'
+        end as when_to_play
+      from
+        decks inner join cards on decks.id = cards.deck_id
+      where decks.user_id = param_user_id
+        and cards.learn = true
+    ) sub
+  group by deck_id, when_to_play;
+end;
+$$ LANGUAGE 'plpgsql';
+
+--
+create or replace function total_cards(param_user_id uuid)
+returns TABLE (
+        r_deck_id uuid,
+        r_count bigint
+) 
+AS $$
+begin
+  RETURN QUERY select 
+    deck_id, count(*)
+  from
+    (
+      select
+        decks.id as deck_id
+      from
+        decks inner join cards on decks.id = cards.deck_id
+      where decks.user_id = param_user_id
+    ) sub
+  group by deck_id;
+end;
+$$ LANGUAGE 'plpgsql';

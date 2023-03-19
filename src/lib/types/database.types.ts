@@ -138,6 +138,25 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      cards_to_play: {
+        Args: {
+          param_user_id: string
+        }
+        Returns: {
+          r_deck_id: string
+          r_when_to_play: string
+          r_count: number
+        }[]
+      }
+      total_cards: {
+        Args: {
+          param_user_id: string
+        }
+        Returns: {
+          r_deck_id: string
+          r_count: number
+        }[]
+      }
       update_deck_score: {
         Args: {
           deck_id: string
