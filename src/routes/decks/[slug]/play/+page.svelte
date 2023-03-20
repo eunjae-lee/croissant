@@ -17,6 +17,8 @@
 	$: currentCard = data.cards[currentIndex];
 	let hardMode = data.deck.hard_mode || false;
 
+	const HARD_MODE_ADVANTAGE = 3;
+
 	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: BOX_NUMBER }) => {
 		const now = new Date();
 		const next = add(now, {
@@ -57,7 +59,10 @@
 		} else if (score === 3) {
 			await bumpUp({ card: currentCard });
 		}
-		await data.supabase.rpc('update_deck_score', { deck_id: data.deck.id, score });
+		await data.supabase.rpc('update_deck_score', {
+			deck_id: data.deck.id,
+			score: (hardMode ? HARD_MODE_ADVANTAGE : 1) * score
+		});
 	};
 
 	const updateHardMode = async () => {
