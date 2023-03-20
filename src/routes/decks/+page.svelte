@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
-	import { Info } from 'lucide-svelte';
+	import { Info, Plus, Zap, List } from 'lucide-svelte';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import type { Deck } from '$lib/types';
 	import type { PageData } from './$types';
@@ -87,8 +87,11 @@
 				<div class="card bg-base-100 shadow-xl">
 					<div class="card-body justify-between">
 						<h2 class="card-title flex items-center">
-							<span>{deck.name}</span>
-							<span class="font-normal text-sm">{formatNumber(deck.play_score_sum || 0)}XP</span>
+							<p>
+								<span>{deck.name}</span>
+								<span class="font-normal text-sm">{formatNumber(deck.play_score_sum || 0)}XP</span>
+							</p>
+							<a href={`/decks/${deck.slug}/info`} class="btn btn-ghost"><Info /></a>
 						</h2>
 						<hr />
 						<div class="flex flex-col gap-4 my-4">
@@ -114,9 +117,13 @@
 							</div>
 						</div>
 						<div class="card-actions flex-nowrap">
-							<a href={`/decks/${deck.slug}/add`} class="btn btn-secondary">Add Cards</a>
-							<a href={`/decks/${deck.slug}/play`} class="btn btn-primary">Play Cards</a>
-							<a href={`/decks/${deck.slug}/info`} class="btn btn-ghost"><Info /></a>
+							<a href={`/decks/${deck.slug}/add`} class="btn btn-secondary"
+								><Plus size={18} /><span class="ml-2">New</span></a
+							>
+							<a href={`/decks/${deck.slug}/play`} class="btn btn-primary"
+								><Zap size={18} /><span class="ml-2">Play</span></a
+							>
+							<a href={`/decks/${deck.slug}/list`} class="btn btn-ghost" title="List"><List /></a>
 						</div>
 					</div>
 				</div>

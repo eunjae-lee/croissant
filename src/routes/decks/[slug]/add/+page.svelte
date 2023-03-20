@@ -83,7 +83,7 @@
 	</Container>
 
 	{#if showSuccessToast}
-		<div class="toast toast-top toast-end">
+		<div class="mt-12 toast toast-top toast-end">
 			<div class="alert alert-success">
 				<div>
 					<span>Card added successfully.</span>
@@ -93,7 +93,7 @@
 	{/if}
 
 	{#if showErrorToast}
-		<div class="toast toast-top toast-end">
+		<div class="mt-12 toast toast-top toast-end">
 			<div class="alert alert-error">
 				<div>
 					<span>Error occured. We're looking into it.</span>
