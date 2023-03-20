@@ -102,7 +102,10 @@
 				<div class="badge badge-outline">Back</div>
 				<div class="text-xl sm:text-2xl">
 					{#if singleInputForWholeCard}
-						<textarea class="textarea textarea-bordered w-full" bind:value={valueForWholeCard} />
+						<textarea
+							class="textarea textarea-bordered w-full text-2xl h-32"
+							bind:value={valueForWholeCard}
+						/>
 					{:else}
 						{#each stringSplitWithCloze as item, index (index)}
 							{#if item.type === 'text'}

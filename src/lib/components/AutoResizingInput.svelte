@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
-
 	export let onInput: (text: string) => void;
 
 	let value: string;
