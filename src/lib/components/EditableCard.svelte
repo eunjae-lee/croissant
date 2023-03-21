@@ -1,33 +1,67 @@
 <script lang="ts">
 	import type { Card } from '$lib/types';
+	import type { SupabaseClient } from '@supabase/supabase-js';
+	import { Trash2 } from 'lucide-svelte';
 
 	export let card: Card;
-	export let onChange: (card: Card) => void;
-	export let edited: boolean;
+	export let supabase: SupabaseClient;
+	export let onToast: (type: 'success' | 'failure', message: string) => void;
+
+	async function onChange() {
+		await supabase
+			.from('cards')
+			.update({
+				front: card.front,
+				back: card.back
+			})
+			.eq('id', card.id);
+		onToast('success', 'Saved!');
+	}
+
+	async function onDelete() {
+		await supabase
+			.from('cards')
+			.update({
+				deleted: true
+			})
+			.eq('id', card.id);
+		card.deleted = true;
+		onToast('success', 'Deleted!');
+	}
 </script>
 
-<div class="card w-full bg-base-100 shadow-lg">
-	<div class="card-body py-4 px-6">
-		<div class="flex justify-between">
-			<div class="badge badge-outline">Front</div>
-			{#if edited}
-				<div class="badge badge-secondary text-xs">edited</div>
-			{/if}
+{#if !card.deleted}
+	<div class="card w-full bg-base-100 shadow-lg">
+		<div class="card-body py-4 px-6">
+			<div class="flex justify-between items-center">
+				<div class="badge badge-outline">Front</div>
+				<div class="flex items-center">
+					<button
+						type="button"
+						class="btn btn-ghost opacity-50 hover:opacity-100"
+						on:click={() => {
+							if (confirm('Delete this card?')) {
+								onDelete();
+							}
+						}}><Trash2 size={16} /></button
+					>
+				</div>
+			</div>
+			<textarea
+				class="textarea textarea-bordered text-lg h-24 sm:text-xl sm:h-28"
+				placeholder="Front"
+				bind:value={card.front}
+				on:change={onChange}
+				required
+			/>
+			<div class="mt-4 badge badge-outline">Back</div>
+			<textarea
+				class="textarea textarea-bordered text-lg h-24 sm:text-xl sm:h-28"
+				placeholder="Back"
+				bind:value={card.back}
+				on:change={onChange}
+				required
+			/>
 		</div>
-		<textarea
-			class="textarea textarea-bordered text-lg h-24 sm:text-xl sm:h-28"
-			placeholder="Front"
-			bind:value={card.front}
-			on:input={() => onChange(card)}
-			required
-		/>
-		<div class="mt-4 badge badge-outline">Back</div>
-		<textarea
-			class="textarea textarea-bordered text-lg h-24 sm:text-xl sm:h-28"
-			placeholder="Back"
-			bind:value={card.back}
-			on:input={() => onChange(card)}
-			required
-		/>
 	</div>
-</div>
+{/if}

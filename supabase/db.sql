@@ -124,6 +124,9 @@ alter table
 alter table
   cards add column next_play_ts TIMESTAMP WITH TIME ZONE default now();
 
+alter table
+  cards add column deleted boolean not null default false;
+
 create policy "Can create own cards." on cards for
 insert
   with check (auth.uid() = user_id);

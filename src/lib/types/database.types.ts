@@ -63,6 +63,7 @@ export interface Database {
           box: number
           created_ts: string
           deck_id: string
+          deleted: boolean
           front: string
           id: string
           last_played_ts: string | null
@@ -76,6 +77,7 @@ export interface Database {
           box?: number
           created_ts?: string
           deck_id: string
+          deleted?: boolean
           front: string
           id?: string
           last_played_ts?: string | null
@@ -89,6 +91,7 @@ export interface Database {
           box?: number
           created_ts?: string
           deck_id?: string
+          deleted?: boolean
           front?: string
           id?: string
           last_played_ts?: string | null

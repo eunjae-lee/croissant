@@ -5,36 +5,56 @@
 	import Container from '$lib/components/Container.svelte';
 	import EditableCard from '$lib/components/EditableCard.svelte';
 	import type { Card } from '$lib/types';
+	import { onMount } from 'svelte';
+	import { Plus } from 'lucide-svelte';
 
 	export let data: PageData;
 
-	let showSuccessToast: boolean;
-	let showErrorToast: boolean;
+	let cards: Card[] = [];
 
-	let editedCards: Record<string, Card> = {};
+	let toastMessage: string | undefined;
+	let toastType: 'success' | 'failure';
 
-	let saving: boolean = false;
+	let loading: boolean;
 
-	function onChange(card: Card) {
-		editedCards[card.id] = card;
+	async function addNewCard() {
+		loading = true;
+		const result = await data.supabase
+			.from('cards')
+			.insert({
+				front: '',
+				back: '',
+				deck_id: data.deck.id,
+				user_id: data.deck.user_id
+			})
+			.select('*');
+		if (result.data && result.data[0]) {
+			cards = [result.data[0], ...cards];
+		}
+		loading = false;
+		setTimeout(() => {
+			window.scrollTo(0, 0);
+		}, 100);
 	}
 
-	async function saveAll() {
-		saving = true;
-		await Promise.all(
-			Object.values(editedCards).map((card) =>
-				data.supabase
-					.from('cards')
-					.update({
-						front: card.front,
-						back: card.back
-					})
-					.eq('id', card.id)
-			)
-		);
-		saving = false;
-		editedCards = {};
+	function onToast(type: 'success' | 'failure', message: string) {
+		toastMessage = message;
+		toastType = type;
+
+		setTimeout(() => {
+			toastMessage = undefined;
+		}, 1000);
 	}
+
+	onMount(async () => {
+		const result = await data.supabase
+			.from('cards')
+			.select('*')
+			.eq('deck_id', data.deck.id)
+			.eq('deleted', false)
+			.order('created_ts', { ascending: false });
+		cards = result.data || [];
+	});
 </script>
 
 <MetaTags title="All cards | Croissant" />
@@ -43,37 +63,31 @@
 
 <div class="mt-8">
 	<Container>
-		<div class="sticky top-8 flex justify-end z-10">
+		<div class="sticky top-8 flex z-10">
 			<button
 				type="button"
-				class="btn btn-primary"
-				class:loading={saving}
-				disabled={Object.keys(editedCards).length === 0 || saving}
-				on:click={saveAll}>Save All</button
+				class="btn btn-outline btn-primary"
+				class:loading
+				disabled={loading}
+				on:click={addNewCard}><Plus /><span>New Card</span></button
 			>
 		</div>
 		<div class="my-8 flex flex-col gap-8">
-			{#each data.cards as card (card.id)}
-				<EditableCard {card} {onChange} edited={Boolean(editedCards[card.id])} />
+			{#each cards as card (card.id)}
+				<EditableCard {card} supabase={data.supabase} {onToast} />
 			{/each}
 		</div>
 	</Container>
 
-	{#if showSuccessToast}
+	{#if toastMessage}
 		<div class="mt-12 toast toast-top toast-end">
-			<div class="alert alert-success">
+			<div
+				class="alert"
+				class:alert-success={toastType === 'success'}
+				class:alert-error={toastType === 'failure'}
+			>
 				<div>
-					<span>Card added successfully.</span>
-				</div>
-			</div>
-		</div>
-	{/if}
-
-	{#if showErrorToast}
-		<div class="mt-12 toast toast-top toast-end">
-			<div class="alert alert-error">
-				<div>
-					<span>Error occured. We're looking into it.</span>
+					<span>{toastMessage}</span>
 				</div>
 			</div>
 		</div>

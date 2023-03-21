@@ -8,11 +8,6 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 	if (!deck) {
 		throw error(404);
 	}
-	const { data: cards } = await supabase
-		.from('cards')
-		.select('*')
-		.eq('deck_id', deck.id)
-		.order('created_ts', { ascending: false });
 
-	return { deck, cards: cards || [] };
+	return { deck };
 };

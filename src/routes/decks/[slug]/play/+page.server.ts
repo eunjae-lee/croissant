@@ -14,6 +14,7 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 		.select('*')
 		.eq('deck_id', deck.id)
 		.eq('learn', true)
+		.eq('deleted', false)
 		.lte('box', MAX_BOX)
 		.lte('next_play_ts', new Date().toISOString());
 
