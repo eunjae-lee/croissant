@@ -1,8 +1,9 @@
 <script lang="ts">
+	import hotkeys from 'hotkeys-js';
 	import { MetaTags } from 'svelte-meta-tags';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import Container from '$lib/components/Container.svelte';
 
 	export let data: PageData;
@@ -12,6 +13,7 @@
 	let status: 'init' | 'submitting' | 'error' = 'init';
 
 	let frontElem: HTMLTextAreaElement;
+	let backElem: HTMLTextAreaElement;
 
 	let showSuccessToast: boolean;
 	let showErrorToast: boolean;
@@ -44,6 +46,26 @@
 
 	onMount(() => {
 		frontElem.focus();
+
+		hotkeys.filter = function (event: Event) {
+			// @ts-ignore
+			var tagName = (event.target || event.srcElement).tagName;
+			hotkeys.setScope(/^(TEXTAREA)$/.test(tagName) ? 'input' : 'other');
+			return true;
+		};
+		hotkeys(
+			'cmd+enter',
+			{
+				element: backElem
+			},
+			() => {
+				onSubmit();
+			}
+		);
+	});
+
+	onDestroy(() => {
+		hotkeys.unbind('cmd+enter');
 	});
 </script>
 
@@ -65,6 +87,7 @@
 				/>
 				<div class="mt-4 badge badge-outline">Back</div>
 				<textarea
+					bind:this={backElem}
 					class="textarea textarea-bordered text-xl h-24 sm:text-3xl sm:h-36"
 					placeholder="Back"
 					bind:value={back}

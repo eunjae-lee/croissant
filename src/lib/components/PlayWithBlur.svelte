@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Confetti from 'js-confetti';
 	import type { Card, Score } from '$lib/types';
 	import { hasSomethingToReveal } from '$lib/utils';
 	import CardWithBlur from './CardWithBlur.svelte';
@@ -60,7 +61,10 @@
 					<button
 						type="button"
 						class="basis-1/3 btn btn-primary text-lg py-4 sm:text-xl sm:py-8 h-full"
-						on:click={() => submit(3)}
+						on:click={() => {
+							new Confetti().addConfetti({ confettiNumber: 20 });
+							submit(3);
+						}}
 						disabled={status === 'submitting'}>Knew it</button
 					>
 				{/if}

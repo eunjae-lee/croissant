@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Confetti from 'js-confetti';
 	import type { Card, Score } from '$lib/types';
 	import {
 		compareTextLoosely,
@@ -32,6 +33,9 @@
 	async function submit() {
 		status = 'submitting';
 		revealedScore = getScore();
+		if (revealedScore === 3) {
+			new Confetti().addConfetti({ confettiNumber: 20 });
+		}
 		await onSubmit(revealedScore);
 		status = 'revealed';
 	}
