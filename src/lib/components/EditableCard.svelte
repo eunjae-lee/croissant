@@ -19,12 +19,7 @@
 	}
 
 	async function onDelete() {
-		await supabase
-			.from('cards')
-			.update({
-				deleted: true
-			})
-			.eq('id', card.id);
+		await supabase.rpc('delete_card', { param_card_id: card.id });
 		card.deleted = true;
 		onToast('success', 'Deleted!');
 	}

@@ -51,7 +51,6 @@
 			.from('cards')
 			.select('*')
 			.eq('deck_id', data.deck.id)
-			.eq('deleted', false)
 			.order('created_ts', { ascending: false });
 		cards = result.data || [];
 	});

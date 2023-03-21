@@ -104,6 +104,7 @@ export interface Database {
       decks: {
         Row: {
           created_ts: string
+          deleted: boolean | null
           hard_mode: boolean | null
           id: string
           name: string
@@ -116,6 +117,7 @@ export interface Database {
         }
         Insert: {
           created_ts?: string
+          deleted?: boolean | null
           hard_mode?: boolean | null
           id?: string
           name: string
@@ -128,6 +130,7 @@ export interface Database {
         }
         Update: {
           created_ts?: string
+          deleted?: boolean | null
           hard_mode?: boolean | null
           id?: string
           name?: string
@@ -153,6 +156,18 @@ export interface Database {
           r_when_to_play: string
           r_count: number
         }[]
+      }
+      delete_card: {
+        Args: {
+          param_card_id: string
+        }
+        Returns: undefined
+      }
+      delete_deck: {
+        Args: {
+          param_deck_id: string
+        }
+        Returns: undefined
       }
       total_cards: {
         Args: {

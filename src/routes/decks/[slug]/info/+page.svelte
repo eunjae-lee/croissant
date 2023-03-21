@@ -5,10 +5,13 @@
 	import { API_HOST } from '$lib/const';
 	import type { PageData } from './$types';
 	import CopyButton from '$lib/components/CopyButton.svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
 	let showingToken: boolean = false;
+	let toastMessage: string | undefined;
+	let toastType: 'success' | 'failure';
 
 	$: headers = JSON.stringify(
 		{
@@ -34,6 +37,33 @@
 		null,
 		2
 	);
+
+	function showToast(type: 'success' | 'failure', message: string) {
+		toastMessage = message;
+		toastType = type;
+
+		setTimeout(() => {
+			toastMessage = undefined;
+		}, 1000);
+	}
+
+	async function save() {
+		await data.supabase
+			.from('decks')
+			.update({
+				name: data.deck.name
+			})
+			.eq('id', data.deck.id);
+		showToast('success', 'Updated!');
+	}
+
+	async function deleteDeck() {
+		if (confirm('Do you really want to delete the deck and all the cards?')) {
+			await data.supabase.rpc('delete_deck', { param_deck_id: data.deck.id });
+			showToast('success', 'Deleted!');
+			goto('/decks');
+		}
+	}
 </script>
 
 <MetaTags title="Info | Croissant" />
@@ -45,7 +75,13 @@
 		<div class="card w-full bg-base-100 shadow-xl mb-16 pt-4 pb-8">
 			<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
 				<div>
-					<h2 class="text-xl">API Reference</h2>
+					<h2 class="text-xl">Basic Information</h2>
+					<div class="mt-2 flex gap-2 items-center">
+						<input class="input input-bordered" bind:value={data.deck.name} />
+						<button type="button" class="btn btn-primary btn-outline" on:click={save}>Save</button>
+					</div>
+
+					<h2 class="mt-16 text-xl">API Reference</h2>
 					<h3 class="mt-4 text-lg">Add cards to "{data.deck.name}" deck</h3>
 					<p class="mt-4 text-sm">Endpoint</p>
 					<div class="flex items-center gap-2">
@@ -99,10 +135,30 @@
 							>
 						</li>
 					</ul>
+
+					<h2 class="mt-16 text-xl">Dangerous Area</h2>
+					<p class="mt-2">This will delete the deck and all the cards inside it.</p>
+					<button type="button" class="mt-2 btn btn-error" on:click={deleteDeck}
+						>Delete the deck</button
+					>
 				</div>
 			</div>
 		</div>
 	</Container>
+
+	{#if toastMessage}
+		<div class="mt-12 toast toast-top toast-end">
+			<div
+				class="alert"
+				class:alert-success={toastType === 'success'}
+				class:alert-error={toastType === 'failure'}
+			>
+				<div>
+					<span>{toastMessage}</span>
+				</div>
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>

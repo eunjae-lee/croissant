@@ -40,6 +40,7 @@ create table decks (
 alter table decks add column num_plays bigint default 0;
 alter table decks add column play_score_sum bigint default 0;
 alter table decks add column hard_mode boolean default false;
+alter table decks add column deleted boolean default false;
 
 create or replace function public.update_deck_score(deck_id uuid, score smallint)
 returns void as $$
@@ -69,7 +70,16 @@ update
 
 create policy "Can view own decks." on decks for
 select
-  using (auth.uid() = user_id);
+  using (auth.uid() = user_id and deleted = false);
+
+create or replace function public.delete_deck(param_deck_id uuid)
+returns void as $$
+begin
+  update decks
+  set deleted = true
+  where id = param_deck_id and user_id = auth.uid();
+end;
+$$ language plpgsql security definer;
 
 create or replace function public.tidy_deck_before_insert()
 returns trigger as $$
@@ -137,7 +147,16 @@ update
 
 create policy "Can view own cards." on cards for
 select
-  using (auth.uid() = user_id);
+  using (auth.uid() = user_id and deleted = false);
+
+create or replace function public.delete_card(param_card_id uuid)
+returns void as $$
+begin
+  update cards
+  set deleted = true
+  where id = param_card_id and user_id = auth.uid();
+end;
+$$ language plpgsql security definer;
 
 create or replace function public.tidy_card_before_insert()
 returns trigger as $$
