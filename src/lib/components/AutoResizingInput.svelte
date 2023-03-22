@@ -3,14 +3,20 @@
 
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 
+	export let key: string;
 	export let onInput: (text: string) => void;
 
-	let value: string;
+	let value: string | undefined;
 	let input: HTMLInputElement;
 	let sizer: HTMLDivElement;
 	let placeHolderSizer: HTMLDivElement;
 	let mounted: boolean;
 	let inputWidth: number;
+
+	$: if (key) {
+		value = undefined;
+		inputWidth = 0;
+	}
 
 	const copyStyles = (styles, node) => {
 		node.style.fontSize = styles.fontSize;
@@ -71,11 +77,11 @@
 <div style="display:inline-block">
 	<input
 		bind:this={input}
-		class="input input-bordered"
+		class="mx-1 input input-bordered text-xl sm:text-2xl"
 		style="box-sizing:content-box"
 		style:width={`${inputWidth || 2}px`}
-		on:input={() => {
-			onInput(value);
+		on:input={(event) => {
+			onInput(event.target.value);
 		}}
 		bind:value
 	/>

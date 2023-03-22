@@ -9,7 +9,7 @@
 	} from '$lib/utils';
 	import Container from './Container.svelte';
 	import AutoResizingInput from './AutoResizingInput.svelte';
-./AutoResizingInput.svelte
+
 	export let card: Card;
 	export let onNext: () => void;
 	export let onSubmit: (score: Score) => Promise<void>;
@@ -116,6 +116,7 @@
 								<span>{@html item.content.split('\n').join('<br />')}</span>
 							{:else if item.type === 'cloze'}
 								<AutoResizingInput
+									key={card.id}
 									onInput={(text) => {
 										inputValues[index] = text;
 									}}
