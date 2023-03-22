@@ -24,7 +24,9 @@ const cleanUpText = (text: string | undefined) => {
 		.split('\n')
 		.map((line) => line.trim())
 		.join(' ')
-		.replaceAll(/[!?.,"'`\-:;<>]/g, '');
+		.replaceAll(/[“”]/g, `"`)
+		.replaceAll(/[!?.,"`\-:;<>]/g, '')
+		.replaceAll(/[‘’]/g, "'");
 };
 
 export const compareTextLoosely = (

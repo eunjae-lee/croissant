@@ -10,5 +10,10 @@ describe('card', () => {
 		it('compares regardless of accent', () => {
 			expect(compareTextLoosely('Café', 'cafe')).toBe('only-different-accents');
 		});
+
+		it('ignores smart quotes', () => {
+			expect(compareTextLoosely(`‘’`, `''`)).toBe('equal');
+			expect(compareTextLoosely(`“”`, `""`)).toBe('equal');
+		});
 	});
 });
