@@ -1,26 +1,88 @@
 <script lang="ts">
+	// manually converted from https://github.com/JedWatson/react-input-autosize/blob/master/src/AutosizeInput.js
+
+	import { afterUpdate, onDestroy, onMount } from 'svelte';
+
 	export let onInput: (text: string) => void;
 
 	let value: string;
-
 	let input: HTMLInputElement;
+	let sizer: HTMLDivElement;
+	let placeHolderSizer: HTMLDivElement;
+	let mounted: boolean;
+	let inputWidth: number;
 
-	// Function to resize the input based on its content
-	function resizeInput() {
-		if (input) {
-			input.style.width = '0px'; // Reset the width before calculating the new width
-			input.style.width = input.scrollWidth + 4 + 'px';
+	const copyStyles = (styles, node) => {
+		node.style.fontSize = styles.fontSize;
+		node.style.fontFamily = styles.fontFamily;
+		node.style.fontWeight = styles.fontWeight;
+		node.style.fontStyle = styles.fontStyle;
+		node.style.letterSpacing = styles.letterSpacing;
+		node.style.textTransform = styles.textTransform;
+	};
+
+	function copyInputStyles() {
+		if (!mounted || !window.getComputedStyle) {
+			return;
+		}
+		const inputStyles = input && window.getComputedStyle(input);
+		if (!inputStyles) {
+			return;
+		}
+		copyStyles(inputStyles, sizer);
+		if (placeHolderSizer) {
+			copyStyles(inputStyles, placeHolderSizer);
 		}
 	}
+
+	function updateInputWidth() {
+		if (!mounted || !sizer || typeof sizer.scrollWidth === 'undefined') {
+			return;
+		}
+		let newInputWidth = sizer.scrollWidth + 2;
+
+		if (newInputWidth !== inputWidth) {
+			inputWidth = newInputWidth;
+		}
+	}
+
+	onMount(() => {
+		mounted = true;
+		copyInputStyles();
+		updateInputWidth();
+	});
+
+	afterUpdate(() => {
+		updateInputWidth();
+	});
+
+	onDestroy(() => {
+		mounted = false;
+	});
+
+	$: sizerValue = [value, ''].reduce((previousValue, currentValue) => {
+		if (previousValue !== null && previousValue !== undefined) {
+			return previousValue;
+		}
+		return currentValue;
+	});
 </script>
 
-<input
-	type="text"
-	class="input input-bordered w-12 my-2 mx-1"
-	bind:this={input}
-	bind:value
-	on:input={() => {
-		onInput(value);
-		resizeInput();
-	}}
-/>
+<div style="display:inline-block">
+	<input
+		bind:this={input}
+		class="input input-bordered"
+		style="box-sizing:content-box"
+		style:width={`${inputWidth || 2}px`}
+		on:input={() => {
+			onInput(value);
+		}}
+		bind:value
+	/>
+	<div
+		bind:this={sizer}
+		style="position:absolute; top:0; left:0; visibility:hidden; height:0; overflow:scroll; whiteSpace:pre"
+	>
+		{sizerValue}
+	</div>
+</div>

@@ -9,7 +9,7 @@
 	} from '$lib/utils';
 	import Container from './Container.svelte';
 	import AutoResizingInput from './AutoResizingInput.svelte';
-
+./AutoResizingInput.svelte
 	export let card: Card;
 	export let onNext: () => void;
 	export let onSubmit: (score: Score) => Promise<void>;
