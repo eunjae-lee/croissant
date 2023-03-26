@@ -132,12 +132,12 @@
 					/>
 					<Prompt
 						texts={[
-							`Pick 3 basic verbs, and give me total 24 examples by mixing different subjects with those verbs in present tense.`
+							`I speak English and I'm learning French. Pick 3 basic verbs, and give me total 24 examples by mixing different subjects with those verbs in present tense.`
 						]}
 					/>
 					<Prompt
 						texts={[
-							`I'm about to call a real-estate agency to look for an apartment. Give me 5 basic sentences that I could use.`
+							`I speak English and I'm learning French. I'm about to call a real-estate agency to look for an apartment. Give me 5 basic sentences that I could use.`
 						]}
 					/>
 				</div>
