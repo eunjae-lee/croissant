@@ -103,7 +103,8 @@
 				</div>
 			</div>
 		</form>
-		<div class="mt-4 flex justify-end">
+		<div class="mt-4 flex justify-between">
+			<a href="./add-json" class="btn btn-ghost opacity-50 hover:opacity-100">Add JSON</a>
 			<a href="./play" class="btn btn-ghost opacity-50 hover:opacity-100">Play cards ?</a>
 		</div>
 	</Container>
