@@ -116,6 +116,7 @@
 					{#if singleInputForWholeCard}
 						<textarea
 							class="textarea textarea-bordered w-full text-2xl h-32"
+							disabled={status !== 'init'}
 							bind:value={valueForWholeCard}
 						/>
 					{:else}
@@ -125,6 +126,7 @@
 							{:else if item.type === 'cloze'}
 								<AutoResizingInput
 									key={card.id}
+									disabled={status !== 'init'}
 									maxWidth={inputWrapperWidth - 42}
 									onInput={(text) => {
 										inputValues[index] = text;

@@ -103,6 +103,9 @@
 				</div>
 			</div>
 		</form>
+		<div class="mt-4 flex justify-end">
+			<a href="./play" class="btn btn-ghost opacity-50 hover:opacity-100">Play cards ?</a>
+		</div>
 	</Container>
 
 	{#if showSuccessToast}
