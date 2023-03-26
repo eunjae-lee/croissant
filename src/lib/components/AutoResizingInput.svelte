@@ -5,6 +5,7 @@
 
 	export let key: string;
 	export let onInput: (text: string) => void;
+	export let maxWidth: number | undefined = undefined;
 
 	let value: string | undefined;
 	let input: HTMLInputElement;
@@ -45,7 +46,10 @@
 		if (!mounted || !sizer || typeof sizer.scrollWidth === 'undefined') {
 			return;
 		}
-		let newInputWidth = sizer.scrollWidth + 2;
+		let newInputWidth = sizer.scrollWidth + 6;
+		if (maxWidth && maxWidth < newInputWidth) {
+			newInputWidth = maxWidth;
+		}
 
 		if (newInputWidth !== inputWidth) {
 			inputWidth = newInputWidth;
@@ -74,7 +78,7 @@
 	});
 </script>
 
-<div style="display:inline-block">
+<div class="my-1" style="display:inline-block">
 	<input
 		bind:this={input}
 		class="mx-1 input input-bordered text-xl sm:text-2xl"

@@ -9,6 +9,7 @@
 	} from '$lib/utils';
 	import Container from './Container.svelte';
 	import AutoResizingInput from './AutoResizingInput.svelte';
+	import { onMount } from 'svelte';
 
 	export let card: Card;
 	export let onNext: () => void;
@@ -76,6 +77,13 @@
 			) as Score;
 		}
 	}
+
+	let inputWrapper: HTMLDivElement;
+	let inputWrapperWidth: number;
+
+	onMount(() => {
+		inputWrapperWidth = inputWrapper.clientWidth;
+	});
 </script>
 
 <Container>
@@ -104,7 +112,7 @@
 				</div>
 				<hr />
 				<div class="badge badge-outline">Back</div>
-				<div class="text-xl sm:text-2xl">
+				<div bind:this={inputWrapper} class="text-xl sm:text-2xl">
 					{#if singleInputForWholeCard}
 						<textarea
 							class="textarea textarea-bordered w-full text-2xl h-32"
@@ -117,6 +125,7 @@
 							{:else if item.type === 'cloze'}
 								<AutoResizingInput
 									key={card.id}
+									maxWidth={inputWrapperWidth - 42}
 									onInput={(text) => {
 										inputValues[index] = text;
 									}}
