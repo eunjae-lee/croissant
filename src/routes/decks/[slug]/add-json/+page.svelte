@@ -125,19 +125,15 @@
 					>, you can ask it to generate JSON for you. The example prompts are like the following.
 				</p>
 				<div class="flex flex-col gap-4">
+					<Prompt texts={[`Write me 5 sentences I can use in a café at an A2 level.`]} />
 					<Prompt
 						texts={[
-							`I speak English and I'm learning French. Write me 5 sentences I can use in a café at an A2 level.`
+							`Pick 3 basic verbs, and give me total 24 examples by mixing different subjects with those verbs in present tense.`
 						]}
 					/>
 					<Prompt
 						texts={[
-							`I speak English and I'm learning French. Pick 3 basic verbs, and give me total 24 examples by mixing different subjects with those verbs in present tense.`
-						]}
-					/>
-					<Prompt
-						texts={[
-							`I speak English and I'm learning French. I'm about to call a real-estate agency to look for an apartment. Give me 5 basic sentences that I could use.`
+							`I'm about to call a real-estate agency to look for an apartment. Give me 5 basic sentences that I could use.`
 						]}
 					/>
 				</div>
