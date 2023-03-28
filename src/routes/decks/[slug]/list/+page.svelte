@@ -46,14 +46,45 @@
 		}, 1000);
 	}
 
-	onMount(async () => {
+	async function loadCards() {
 		const result = await data.supabase
 			.from('cards')
 			.select('*')
 			.eq('deck_id', data.deck.id)
-			.order('created_ts', { ascending: false });
+			.order('num_order');
 		cards = result.data || [];
-	});
+	}
+
+	async function onMoveUp(card: Card) {
+		const currentIndex = cards.findIndex((c) => c.id === card.id);
+		if (currentIndex === 0) {
+			return;
+		}
+		const targetOrder =
+			currentIndex === 1 ? cards[0].num_order - 1 : cards[currentIndex - 2].num_order;
+		await data.supabase.rpc('move_card', {
+			param_card_id: card.id,
+			param_num_after: targetOrder
+		});
+
+		await loadCards();
+	}
+
+	async function onMoveDown(card: Card) {
+		const currentIndex = cards.findIndex((c) => c.id === card.id);
+		if (currentIndex === cards.length - 1) {
+			return;
+		}
+		const targetOrder = cards[currentIndex + 1].num_order;
+		await data.supabase.rpc('move_card', {
+			param_card_id: card.id,
+			param_num_after: targetOrder
+		});
+
+		await loadCards();
+	}
+
+	onMount(loadCards);
 </script>
 
 <MetaTags title="All cards | Croissant" />
@@ -73,7 +104,7 @@
 		</div>
 		<div class="my-8 flex flex-col gap-8">
 			{#each cards as card (card.id)}
-				<EditableCard {card} supabase={data.supabase} {onToast} />
+				<EditableCard {card} supabase={data.supabase} {onToast} {onMoveUp} {onMoveDown} />
 			{/each}
 		</div>
 	</Container>

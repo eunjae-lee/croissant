@@ -69,6 +69,7 @@ export interface Database {
           last_played_ts: string | null
           learn: boolean
           next_play_ts: string | null
+          num_order: number
           updated_ts: string | null
           user_id: string
         }
@@ -83,6 +84,7 @@ export interface Database {
           last_played_ts?: string | null
           learn?: boolean
           next_play_ts?: string | null
+          num_order?: number
           updated_ts?: string | null
           user_id: string
         }
@@ -97,6 +99,7 @@ export interface Database {
           last_played_ts?: string | null
           learn?: boolean
           next_play_ts?: string | null
+          num_order?: number
           updated_ts?: string | null
           user_id?: string
         }
@@ -166,6 +169,13 @@ export interface Database {
       delete_deck: {
         Args: {
           param_deck_id: string
+        }
+        Returns: undefined
+      }
+      move_card: {
+        Args: {
+          param_card_id: string
+          param_num_after: number
         }
         Returns: undefined
       }
@@ -290,6 +300,15 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      can_insert_object: {
+        Args: {
+          bucketid: string
+          name: string
+          owner: string
+          metadata: Json
+        }
+        Returns: undefined
+      }
       extension: {
         Args: {
           name: string

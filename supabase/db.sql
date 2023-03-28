@@ -137,6 +137,9 @@ alter table
 alter table
   cards add column deleted boolean not null default false;
 
+alter table
+  cards add column num_order integer not null default 0;
+
 create policy "Can create own cards." on cards for
 insert
   with check (auth.uid() = user_id);
@@ -182,6 +185,40 @@ $$ language plpgsql security definer;
 create trigger on_card_before_update
   before update on public.cards
   for each row execute procedure public.tidy_card_before_update();
+
+CREATE OR REPLACE FUNCTION set_order() RETURNS TRIGGER AS $$
+BEGIN
+  NEW."num_order" = (
+    SELECT COALESCE(MAX("num_order"), 0) + 1
+    FROM cards
+    WHERE deck_id = NEW."deck_id"
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_order_trigger
+BEFORE INSERT ON cards
+FOR EACH ROW
+EXECUTE FUNCTION set_order();
+
+
+CREATE OR REPLACE FUNCTION move_card(param_card_id uuid, param_num_after integer)
+RETURNS void AS $$
+DECLARE
+  current_order integer;
+BEGIN
+    SELECT num_order INTO current_order FROM cards WHERE id = param_card_id;
+
+    IF param_num_after < current_order THEN
+      UPDATE cards SET num_order = num_order + 1 WHERE param_num_after < num_order AND num_order < current_order;
+      UPDATE cards SET num_order = param_num_after + 1 WHERE id = param_card_id;
+    ELSE
+      UPDATE cards SET num_order = num_order - 1 WHERE current_order < num_order AND num_order <= param_num_after;
+      UPDATE cards SET num_order = param_num_after WHERE id = param_card_id;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
 
 --
 create or replace function cards_to_play(param_user_id uuid)
