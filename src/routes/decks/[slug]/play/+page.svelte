@@ -10,6 +10,8 @@
 	import { SPACE_PER_BOX, type BOX_NUMBER } from './const';
 	import Container from '$lib/components/Container.svelte';
 	import PlayWithInput from '$lib/components/PlayWithInput.svelte';
+	import { Info } from 'lucide-svelte';
+	import { SlideToggle } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
@@ -102,54 +104,35 @@
 <NavBar deck={data.deck} />
 
 {#if currentIndex < totalNumberOfCards}
-	<Container>
-		{#if reviewingMistakes}
-			<div class="alert shadow-lg">
-				<div>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						class="stroke-current flex-shrink-0 w-6 h-6"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-						/></svg
-					>
-					<span>Let's review your mistakes.</span>
-				</div>
-			</div>
-		{/if}
+	<div class="mt-8">
+		<Container>
+			<h2 class="unstyled mb-8 text-primary-700">[{data.deck.name}] Play Cards</h2>
 
-		<div class="mt-8 flex justify-between items-center">
-			<div class="badge badge-outline">{`${currentIndex + 1}/${totalNumberOfCards}`}</div>
-			<div>
-				<div class="form-control">
-					<label class="cursor-pointer label">
-						<span class="label-text mr-2 text-xs uppercase opacity-75" class:font-bold={hardMode}
-							>Hard Mode</span
-						>
-						<input
-							type="checkbox"
-							class="toggle toggle-sm"
-							bind:checked={hardMode}
-							on:change={updateHardMode}
-						/>
-					</label>
+			{#if reviewingMistakes}
+				<div class="alert variant-soft-warning">
+					<Info />
+					<div class="alert-message">Let's review your mistakes.</div>
+				</div>
+			{/if}
+
+			<div class="mt-8 flex justify-between items-center">
+				<div class="badge">{`${currentIndex + 1}/${totalNumberOfCards}`}</div>
+				<div>
+					<SlideToggle name="hard-mode" size="sm" bind:checked={hardMode} on:change={updateHardMode}
+						>Hard Mode</SlideToggle
+					>
 				</div>
 			</div>
-		</div>
-	</Container>
+		</Container>
+	</div>
 	{#if hardMode}
 		<PlayWithInput card={currentCard} {onNext} {onSubmit} />
 	{:else}
 		<PlayWithBlur card={currentCard} {onNext} {onSubmit} />
 	{/if}
 	<Container>
-		<div class="mt-4 flex justify-end">
-			<a href="./add" class="btn btn-ghost opacity-50 hover:opacity-100">Add cards ?</a>
+		<div class="my-4 flex justify-end">
+			<a href="./add" class="btn variant-soft">Add cards ?</a>
 		</div>
 	</Container>
 {:else}
@@ -157,3 +140,9 @@
 		<Congrats />
 	</div>
 {/if}
+
+<style>
+	:global(body) {
+		@apply !overflow-y-scroll;
+	}
+</style>

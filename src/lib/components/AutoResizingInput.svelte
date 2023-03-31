@@ -82,7 +82,7 @@
 <div class="my-1" style="display:inline-block">
 	<input
 		bind:this={input}
-		class="mx-1 input input-bordered text-xl sm:text-2xl"
+		class="mx-1 input text-xl sm:text-2xl py-1 px-3 sm:px-4"
 		{disabled}
 		style="box-sizing:content-box"
 		style:width={`${inputWidth || 2}px`}

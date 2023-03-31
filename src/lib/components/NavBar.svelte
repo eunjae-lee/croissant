@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { Deck } from '$lib/types';
+	import { AppBar } from '@skeletonlabs/skeleton';
 
 	export let deck: Deck | undefined = undefined;
 
@@ -9,30 +10,37 @@
 			href: '/decks',
 			title: 'Decks',
 			active: $page.url.pathname === '/decks'
-		},
-		deck && {
-			href: $page.url.pathname,
-			title: deck.name,
-			active: true
 		}
-	].filter(Boolean);
+	];
+	// if (deck) {
+	// 	menuItems.push({
+	// 		href: $page.url.pathname,
+	// 		title: deck.name,
+	// 		active: true
+	// 	});
+	// }
 </script>
 
-<div class="navbar">
-	<div class="flex-1">
-		<a href="/" class="btn btn-ghost normal-case text-xl">🥐</a>
-	</div>
-	<div class="flex-none">
-		<ul class="menu menu-horizontal px-1">
+<AppBar
+	background="bg-surface-200"
+	gridColumns="grid-cols-3"
+	slotDefault="place-self-center"
+	slotTrail="place-content-end"
+	><svelte:fragment slot="lead">
+		<a href="/" class="btn btn-ghost normal-case text-xl"><h1>🥐</h1></a>
+	</svelte:fragment>
+	<svelte:fragment slot="trail">
+		<ul class="flex gap-2 sm:gap-4 px-1">
 			{#each menuItems as item}
 				<li>
 					<a
 						href={item.href}
-						class="decoration-wavy decoration-2 underline-offset-4 decoration-accent"
-						class:underline={item.active}>{item.title}</a
+						class="btn"
+						class:variant-ghost-secondary={!item.active}
+						class:variant-filled-secondary={item.active}>{item.title}</a
 					>
 				</li>
 			{/each}
 		</ul>
-	</div>
-</div>
+	</svelte:fragment>
+</AppBar>

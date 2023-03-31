@@ -5,6 +5,7 @@
 	import type { Deck } from '$lib/types';
 	import type { PageData } from './$types';
 	import Container from '$lib/components/Container.svelte';
+	import { AppShell } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 	let decks: Deck[] = [];
@@ -78,70 +79,81 @@
 
 <MetaTags title="Decks | Croissant" />
 
-<NavBar />
+<AppShell>
+	<svelte:fragment slot="header">
+		<NavBar />
+	</svelte:fragment>
 
-<div class="mt-8">
-	<Container>
-		<div class="grid gap-8 md:grid-cols-2">
-			{#each decks as deck (deck.id)}
-				<div class="card bg-base-100 shadow-xl">
-					<div class="card-body justify-between">
-						<h2 class="card-title flex items-center">
-							<p>
+	<div class="my-8">
+		<Container>
+			<div class="grid gap-8 md:grid-cols-2">
+				{#each decks as deck (deck.id)}
+					<div class="card bg-surface-200">
+						<header class="card-header flex items-center justify-between">
+							<h3>
 								<span>{deck.name}</span>
-								<span class="font-normal text-sm">{formatNumber(deck.play_score_sum || 0)}XP</span>
-							</p>
-							<a href={`/decks/${deck.slug}/info`} class="btn btn-ghost"><Info /></a>
-						</h2>
-						<hr />
-						<div class="flex flex-col gap-4 my-4">
+								<span class="ml-2 font-normal text-sm"
+									>{formatNumber(deck.play_score_sum || 0)}XP</span
+								>
+							</h3>
+							<a href={`/decks/${deck.slug}/info`} class="btn variant-soft-surface"><Info /></a>
+						</header>
+
+						<section class="p-4 flex flex-col gap-4 my-4">
 							<div>
 								<p class="text-sm opacity-75">Total Cards</p>
 								<p class="text-2xl font-bold">
-									{totalCards[deck.id] ? formatNumber(totalCards[deck.id]) : ''}
+									{totalCards[deck.id] ? formatNumber(totalCards[deck.id]) : '-'}
 								</p>
 							</div>
 							<div class="grid grid-cols-2">
 								<div>
 									<p class="text-sm opacity-75">To Study Today</p>
 									<p class="text-2xl font-bold">
-										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].today || 0) : ''}
+										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].today || 0) : '-'}
 									</p>
 								</div>
 								<div>
 									<p class="text-sm opacity-75">Tomorrow</p>
 									<p class="text-2xl font-bold">
-										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].tomorrow || 0) : ''}
+										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].tomorrow || 0) : '-'}
 									</p>
 								</div>
 							</div>
-						</div>
-						<div class="card-actions flex-nowrap">
-							<a href={`/decks/${deck.slug}/add`} class="btn btn-secondary"
-								><Plus size={18} /><span class="ml-2">New</span></a
-							>
-							<a href={`/decks/${deck.slug}/play`} class="btn btn-primary"
-								><Zap size={18} /><span class="ml-2">Play</span></a
-							>
-							<a href={`/decks/${deck.slug}/list`} class="btn btn-ghost" title="List"><List /></a>
-						</div>
-					</div>
-				</div>
-			{/each}
+						</section>
 
-			<div class="card bg-base-100 shadow-xl">
-				<div class="card-body h-48 items-center justify-center gap-8">
-					{#if status === 'loaded' && decks.length === 0}
-						<h2 class="card-title justify-center">Create your first deck</h2>
-					{:else}
-						<h2 class="card-title justify-center text-lg font-normal">
-							Want to learn something else?
-						</h2>
-					{/if}
-					<button class="btn btn-primary justify-center" on:click={createDeck}>Create a deck</button
-					>
-				</div>
+						<footer class="card-footer flex flex-nowrap justify-between">
+							<div class="flex gap-4">
+								<a href={`/decks/${deck.slug}/add`} class="btn variant-filled-primary"
+									><Plus size={18} /><span class="ml-2">New</span></a
+								>
+								<a href={`/decks/${deck.slug}/play`} class="btn variant-filled-primary"
+									><Zap size={18} /><span class="ml-2">Play</span></a
+								>
+							</div>
+							<a href={`/decks/${deck.slug}/list`} class="btn variant-soft-primary" title="List"
+								><List /></a
+							>
+						</footer>
+					</div>
+				{/each}
+
+				{#if status === 'loaded'}
+					<div class="card bg-surface-200">
+						<section class="p-8">
+							{#if decks.length === 0}
+								<h3 class="text-center">Create your first deck</h3>
+							{:else}
+								<h3 class="text-center text-lg font-normal">Want to learn something else?</h3>
+							{/if}
+							<div class="mt-6 flex justify-center">
+								<button class="btn variant-soft-primary" on:click={createDeck}>Create a deck</button
+								>
+							</div>
+						</section>
+					</div>
+				{/if}
 			</div>
-		</div>
-	</Container>
-</div>
+		</Container>
+	</div>
+</AppShell>

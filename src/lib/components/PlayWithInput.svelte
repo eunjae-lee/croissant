@@ -87,65 +87,65 @@
 </script>
 
 <Container>
-	<div class="mt-2 card bg-base-100 shadow-xl">
-		<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
-			<div class="card-actions justify-center flex-nowrap h-24 sm:h-32">
-				{#if status === 'init'}
-					<button
-						type="button"
-						class="btn btn-primary btn-outline text-lg py-4 sm:text-xl sm:py-8 w-full h-full"
-						on:click={submit}>Check the answer</button
-					>
-				{:else if status === 'revealed'}
-					<button
-						type="button"
-						class="btn btn-primary btn-outline text-lg py-4 sm:text-xl sm:py-8 w-full h-full"
-						on:click={goToNext}>Next question</button
-					>
+	<div class="mt-2 card py-4">
+		<header class="card-header flex justify-center flex-nowrap h-24 sm:h-32">
+			{#if status === 'init'}
+				<button
+					type="button"
+					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					on:click={submit}>Check the answer</button
+				>
+			{:else if status === 'revealed'}
+				<button
+					type="button"
+					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					on:click={goToNext}>Next question</button
+				>
+			{/if}
+		</header>
+		<section class="mt-4 p-4 flex flex-col gap-3">
+			<div><span class="badge variant-ghost">Front</span></div>
+			<div class="ml-1 text-xl sm:text-2xl">
+				{@html card.front.split('\n').join('<br />')}
+			</div>
+			<hr class="my-4 !border-t-2 !border-dashed" />
+			<div><span class="badge variant-ghost">Back</span></div>
+			<div bind:this={inputWrapper} class="text-xl sm:text-2xl">
+				{#if singleInputForWholeCard}
+					<textarea
+						class="textarea w-full text-xl sm:text-2xl"
+						disabled={status !== 'init'}
+						rows={4}
+						bind:value={valueForWholeCard}
+					/>
+				{:else}
+					{#each stringSplitWithCloze as item, index (index)}
+						{#if item.type === 'text'}
+							<span>{@html item.content.split('\n').join('<br />')}</span>
+						{:else if item.type === 'cloze'}
+							<AutoResizingInput
+								key={card.id}
+								disabled={status !== 'init'}
+								maxWidth={inputWrapperWidth - 42}
+								onInput={(text) => {
+									inputValues[index] = text;
+								}}
+							/>
+						{/if}
+					{/each}
 				{/if}
 			</div>
 
-			<div class="mt-4 flex flex-col gap-3">
-				<div class="badge badge-outline">Front</div>
-				<div class="text-xl sm:text-2xl">
-					{@html card.front.split('\n').join('<br />')}
-				</div>
-				<hr />
-				<div class="badge badge-outline">Back</div>
-				<div bind:this={inputWrapper} class="text-xl sm:text-2xl">
-					{#if singleInputForWholeCard}
-						<textarea
-							class="textarea textarea-bordered w-full text-2xl h-32"
-							disabled={status !== 'init'}
-							bind:value={valueForWholeCard}
-						/>
-					{:else}
-						{#each stringSplitWithCloze as item, index (index)}
-							{#if item.type === 'text'}
-								<span>{@html item.content.split('\n').join('<br />')}</span>
-							{:else if item.type === 'cloze'}
-								<AutoResizingInput
-									key={card.id}
-									disabled={status !== 'init'}
-									maxWidth={inputWrapperWidth - 42}
-									onInput={(text) => {
-										inputValues[index] = text;
-									}}
-								/>
-							{/if}
-						{/each}
-					{/if}
-				</div>
-
-				{#if status === 'revealed'}
+			{#if status === 'revealed'}
+				<div class="mt-8">
 					{#if revealedScore === 3}
-						<div class="badge badge-lg badge-success">Correct</div>
+						<div><span class="badge text-lg variant-ghost-success">Correct</span></div>
 					{:else if revealedScore === 2}
-						<div class="badge badge-lg badge-warning">Wrong accents</div>
+						<div><span class="badge text-lg variant-ghost-warning">Wrong accents</span></div>
 					{:else if revealedScore === 1}
-						<div class="badge badge-lg badge-error">Wrong</div>
+						<div><span class="badge text-lg variant-ghost-error">Wrong</span></div>
 					{/if}
-					<div class="text-xl sm:text-2xl">
+					<div class="mt-2 text-xl sm:text-2xl">
 						{#each stringSplitWithCloze as item, index (index)}
 							{#if item.type === 'text'}
 								<span>{@html item.content.split('\n').join('<br />')}</span>
@@ -154,8 +154,8 @@
 							{/if}
 						{/each}
 					</div>
-				{/if}
-			</div>
-		</div>
+				</div>
+			{/if}
+		</section>
 	</div>
 </Container>
