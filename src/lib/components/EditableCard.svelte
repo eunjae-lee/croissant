@@ -8,6 +8,8 @@
 	export let supabase: SupabaseClient;
 	export let onMoveUp: (card: Card) => void;
 	export let onMoveDown: (card: Card) => void;
+	export let isFirstCard: boolean;
+	export let isLastCard: boolean;
 
 	async function onChange() {
 		await supabase
@@ -43,14 +45,16 @@
 				<button
 					type="button"
 					class="btn variant-soft"
-					title="Move this card down"
-					on:click={() => onMoveDown(card)}><ArrowDown size={16} /></button
+					title="Move this card up"
+					disabled={isFirstCard}
+					on:click={() => onMoveUp(card)}><ArrowUp size={16} /></button
 				>
 				<button
 					type="button"
 					class="btn variant-soft"
-					title="Move this card up"
-					on:click={() => onMoveUp(card)}><ArrowUp size={16} /></button
+					title="Move this card down"
+					disabled={isLastCard}
+					on:click={() => onMoveDown(card)}><ArrowDown size={16} /></button
 				>
 				<button
 					type="button"
