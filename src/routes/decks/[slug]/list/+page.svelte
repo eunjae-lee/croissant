@@ -7,13 +7,11 @@
 	import type { Card } from '$lib/types';
 	import { onMount } from 'svelte';
 	import { Plus } from 'lucide-svelte';
+	import { AppShell } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
 	let cards: Card[] = [];
-
-	let toastMessage: string | undefined;
-	let toastType: 'success' | 'failure';
 
 	let loading: boolean;
 
@@ -37,21 +35,12 @@
 		}, 100);
 	}
 
-	function onToast(type: 'success' | 'failure', message: string) {
-		toastMessage = message;
-		toastType = type;
-
-		setTimeout(() => {
-			toastMessage = undefined;
-		}, 1000);
-	}
-
 	async function loadCards() {
 		const result = await data.supabase
 			.from('cards')
 			.select('*')
 			.eq('deck_id', data.deck.id)
-			.order('num_order');
+			.order('num_order', { ascending: false });
 		cards = result.data || [];
 	}
 
@@ -89,37 +78,27 @@
 
 <MetaTags title="All cards | Croissant" />
 
-<NavBar deck={data.deck} />
+<AppShell>
+	<svelte:fragment slot="header">
+		<NavBar deck={data.deck} />
+	</svelte:fragment>
 
-<div class="mt-8">
-	<Container>
-		<div class="sticky top-8 flex z-10">
-			<button
-				type="button"
-				class="btn btn-outline btn-primary"
-				class:loading
-				disabled={loading}
-				on:click={addNewCard}><Plus /><span>New Card</span></button
-			>
-		</div>
-		<div class="my-8 flex flex-col gap-8">
-			{#each cards as card (card.id)}
-				<EditableCard {card} supabase={data.supabase} {onToast} {onMoveUp} {onMoveDown} />
-			{/each}
-		</div>
-	</Container>
-
-	{#if toastMessage}
-		<div class="mt-12 toast toast-top toast-end">
-			<div
-				class="alert"
-				class:alert-success={toastType === 'success'}
-				class:alert-error={toastType === 'failure'}
-			>
-				<div>
-					<span>{toastMessage}</span>
-				</div>
+	<div class="mt-8">
+		<Container>
+			<div class="">
+				<button
+					type="button"
+					class="btn variant-soft-primary"
+					class:loading
+					disabled={loading}
+					on:click={addNewCard}><Plus /><span>New Card</span></button
+				>
 			</div>
-		</div>
-	{/if}
-</div>
+			<div class="my-8 flex flex-col gap-8">
+				{#each cards as card (card.id)}
+					<EditableCard {card} supabase={data.supabase} {onMoveUp} {onMoveDown} />
+				{/each}
+			</div>
+		</Container>
+	</div>
+</AppShell>

@@ -6,12 +6,11 @@
 	import type { PageData } from './$types';
 	import CopyButton from '$lib/components/CopyButton.svelte';
 	import { goto } from '$app/navigation';
+	import { AppShell, toastStore } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
 	let showingToken: boolean = false;
-	let toastMessage: string | undefined;
-	let toastType: 'success' | 'failure';
 
 	$: headers = JSON.stringify(
 		{
@@ -38,13 +37,12 @@
 		2
 	);
 
-	function showToast(type: 'success' | 'failure', message: string) {
-		toastMessage = message;
-		toastType = type;
-
-		setTimeout(() => {
-			toastMessage = undefined;
-		}, 1000);
+	function showToast(message: string) {
+		toastStore.trigger({
+			message,
+			timeout: 1500,
+			background: 'variant-filled-success'
+		});
 	}
 
 	async function save() {
@@ -54,13 +52,13 @@
 				name: data.deck.name
 			})
 			.eq('id', data.deck.id);
-		showToast('success', 'Updated!');
+		showToast('Updated!');
 	}
 
 	async function deleteDeck() {
 		if (confirm('Do you really want to delete the deck and all the cards?')) {
 			await data.supabase.rpc('delete_deck', { param_deck_id: data.deck.id });
-			showToast('success', 'Deleted!');
+			showToast('Deleted!');
 			goto('/decks');
 		}
 	}
@@ -68,17 +66,19 @@
 
 <MetaTags title="Info | Croissant" />
 
-<NavBar deck={data.deck} />
+<AppShell>
+	<svelte:fragment slot="header">
+		<NavBar deck={data.deck} />
+	</svelte:fragment>
 
-<div class="mt-8">
-	<Container>
-		<div class="card w-full bg-base-100 shadow-xl mb-16 pt-4 pb-8">
-			<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
+	<div class="my-8">
+		<Container>
+			<div class="card p-4 sm:p-8 flex gap-4 sm:gap-8">
 				<div>
 					<h2 class="text-xl">Basic Information</h2>
 					<div class="mt-2 flex gap-2 items-center">
-						<input class="input input-bordered" bind:value={data.deck.name} />
-						<button type="button" class="btn btn-primary btn-outline" on:click={save}>Save</button>
+						<input type="text" class="input" bind:value={data.deck.name} />
+						<button type="button" class="btn variant-soft-primary" on:click={save}>Save</button>
 					</div>
 
 					<h2 class="mt-16 text-xl">API Reference</h2>
@@ -94,7 +94,7 @@
 					<div class="relative">
 						<pre>{headers}</pre>
 						<button
-							class="btn btn-ghost btn-xs absolute top-1 right-1"
+							class="btn btn-sm variant-filled-secondary absolute top-2 right-2"
 							type="button"
 							on:click={() => {
 								showingToken = !showingToken;
@@ -105,7 +105,8 @@
 					<div>
 						<pre>{requestBody}</pre>
 					</div>
-					<h2 class="mt-8 text-xl">Shortcuts</h2>
+
+					<h2 class="mt-16 text-xl">Shortcuts</h2>
 					<p class="mt-2">
 						To simplify the process of adding cards, <a
 							target="_blank"
@@ -138,43 +139,11 @@
 
 					<h2 class="mt-16 text-xl">Dangerous Area</h2>
 					<p class="mt-2">This will delete the deck and all the cards inside it.</p>
-					<button type="button" class="mt-2 btn btn-error" on:click={deleteDeck}
+					<button type="button" class="mt-2 btn variant-filled-error" on:click={deleteDeck}
 						>Delete the deck</button
 					>
 				</div>
 			</div>
-		</div>
-	</Container>
-
-	{#if toastMessage}
-		<div class="mt-12 toast toast-top toast-end">
-			<div
-				class="alert"
-				class:alert-success={toastType === 'success'}
-				class:alert-error={toastType === 'failure'}
-			>
-				<div>
-					<span>{toastMessage}</span>
-				</div>
-			</div>
-		</div>
-	{/if}
-</div>
-
-<style>
-	a {
-		@apply text-primary underline hover:opacity-75;
-	}
-
-	ul {
-		@apply list-disc;
-	}
-
-	code {
-		@apply border border-primary py-0 px-2 rounded-md text-info-content text-sm font-normal;
-	}
-
-	pre {
-		@apply border border-primary p-2 rounded-md text-info-content text-sm font-normal;
-	}
-</style>
+		</Container>
+	</div>
+</AppShell>

@@ -11,7 +11,7 @@
 	import Container from '$lib/components/Container.svelte';
 	import PlayWithInput from '$lib/components/PlayWithInput.svelte';
 	import { Info } from 'lucide-svelte';
-	import { SlideToggle } from '@skeletonlabs/skeleton';
+	import { AppShell, SlideToggle } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
@@ -101,48 +101,49 @@
 
 <MetaTags title="Play Quiz | Croissant" />
 
-<NavBar deck={data.deck} />
+<AppShell>
+	<svelte:fragment slot="header">
+		<NavBar deck={data.deck} />
+	</svelte:fragment>
 
-{#if currentIndex < totalNumberOfCards}
-	<div class="mt-8">
+	{#if currentIndex < totalNumberOfCards}
+		<div class="mt-8">
+			<Container>
+				<h2 class="unstyled mb-8 text-primary-700">[{data.deck.name}] Play Cards</h2>
+
+				{#if reviewingMistakes}
+					<div class="alert variant-soft-warning">
+						<Info />
+						<div class="alert-message">Let's review your mistakes.</div>
+					</div>
+				{/if}
+
+				<div class="mt-8 flex justify-between items-center">
+					<div class="badge">{`${currentIndex + 1}/${totalNumberOfCards}`}</div>
+					<div>
+						<SlideToggle
+							name="hard-mode"
+							size="sm"
+							bind:checked={hardMode}
+							on:change={updateHardMode}>Hard Mode</SlideToggle
+						>
+					</div>
+				</div>
+			</Container>
+		</div>
+		{#if hardMode}
+			<PlayWithInput card={currentCard} {onNext} {onSubmit} />
+		{:else}
+			<PlayWithBlur card={currentCard} {onNext} {onSubmit} />
+		{/if}
 		<Container>
-			<h2 class="unstyled mb-8 text-primary-700">[{data.deck.name}] Play Cards</h2>
-
-			{#if reviewingMistakes}
-				<div class="alert variant-soft-warning">
-					<Info />
-					<div class="alert-message">Let's review your mistakes.</div>
-				</div>
-			{/if}
-
-			<div class="mt-8 flex justify-between items-center">
-				<div class="badge">{`${currentIndex + 1}/${totalNumberOfCards}`}</div>
-				<div>
-					<SlideToggle name="hard-mode" size="sm" bind:checked={hardMode} on:change={updateHardMode}
-						>Hard Mode</SlideToggle
-					>
-				</div>
+			<div class="my-4 flex justify-end">
+				<a href="./add" class="btn variant-soft">Add cards ?</a>
 			</div>
 		</Container>
-	</div>
-	{#if hardMode}
-		<PlayWithInput card={currentCard} {onNext} {onSubmit} />
 	{:else}
-		<PlayWithBlur card={currentCard} {onNext} {onSubmit} />
-	{/if}
-	<Container>
-		<div class="my-4 flex justify-end">
-			<a href="./add" class="btn variant-soft">Add cards ?</a>
+		<div class="mt-8">
+			<Congrats />
 		</div>
-	</Container>
-{:else}
-	<div class="mt-8">
-		<Congrats />
-	</div>
-{/if}
-
-<style>
-	:global(body) {
-		@apply !overflow-y-scroll;
-	}
-</style>
+	{/if}
+</AppShell>
