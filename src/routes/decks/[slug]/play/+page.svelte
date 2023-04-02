@@ -107,7 +107,7 @@
 	</svelte:fragment>
 
 	{#if currentIndex < totalNumberOfCards}
-		<div class="mt-8">
+		<div class="my-8">
 			<Container>
 				<h2 class="unstyled mb-8 text-primary-700">[{data.deck.name}] Play Cards</h2>
 

@@ -83,7 +83,7 @@
 		<NavBar deck={data.deck} />
 	</svelte:fragment>
 
-	<div class="mt-8">
+	<div class="my-8">
 		<Container>
 			<div class="">
 				<button

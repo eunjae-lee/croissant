@@ -137,7 +137,7 @@
 			</div>
 
 			{#if status === 'revealed'}
-				<div class="mt-8">
+				<div class="my-8">
 					{#if revealedScore === 3}
 						<div><span class="badge text-lg variant-ghost-success">Correct</span></div>
 					{:else if revealedScore === 2}
