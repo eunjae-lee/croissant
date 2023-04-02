@@ -5,7 +5,7 @@
 	import type { PageData } from './$types';
 	import { onDestroy, onMount } from 'svelte';
 	import Container from '$lib/components/Container.svelte';
-	import { AppShell } from '@skeletonlabs/skeleton';
+	import { AppShell, toastStore } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 
@@ -15,9 +15,6 @@
 
 	let frontElem: HTMLTextAreaElement;
 	let backElem: HTMLTextAreaElement;
-
-	let showSuccessToast: boolean;
-	let showErrorToast: boolean;
 
 	async function onSubmit() {
 		status = 'submitting';
@@ -29,19 +26,21 @@
 		});
 		if (error) {
 			status = 'error';
-			showErrorToast = true;
-			setTimeout(() => {
-				showErrorToast = false;
-			}, 1500);
+			toastStore.trigger({
+				message: `Error occured. We're looking into it.`,
+				timeout: 1500,
+				background: 'variant-filled-error'
+			});
 		} else {
 			status = 'init';
 			front = '';
 			back = '';
-			showSuccessToast = true;
+			toastStore.trigger({
+				message: 'Card added successfully.',
+				timeout: 1500,
+				background: 'variant-filled-success'
+			});
 			frontElem.focus();
-			setTimeout(() => {
-				showSuccessToast = false;
-			}, 1500);
 		}
 	}
 
@@ -77,7 +76,7 @@
 		<NavBar deck={data.deck} />
 	</svelte:fragment>
 
-	<div class="mt-8">
+	<div class="my-8">
 		<Container>
 			<h2 class="unstyled mb-8 text-primary-700">[{data.deck.name}] Add Card</h2>
 			<form class="card w-full bg-base-100 shadow-xl" on:submit|preventDefault={onSubmit}>
@@ -115,25 +114,5 @@
 				<a href="./play" class="btn variant-soft">Play cards ?</a>
 			</div>
 		</Container>
-
-		{#if showSuccessToast}
-			<div class="mt-12 toast toast-top toast-end">
-				<div class="alert alert-success">
-					<div>
-						<span>Card added successfully.</span>
-					</div>
-				</div>
-			</div>
-		{/if}
-
-		{#if showErrorToast}
-			<div class="mt-12 toast toast-top toast-end">
-				<div class="alert alert-error">
-					<div>
-						<span>Error occured. We're looking into it.</span>
-					</div>
-				</div>
-			</div>
-		{/if}
 	</div>
 </AppShell>

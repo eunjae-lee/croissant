@@ -85,8 +85,12 @@
 					<h3 class="mt-4 text-lg">Add cards to "{data.deck.name}" deck</h3>
 					<p class="mt-4 text-sm">Endpoint</p>
 					<div class="flex items-center gap-2">
-						<code>{API_HOST}/api/deck/{data.deck.slug}</code>
-						<CopyButton value={`${API_HOST}/api/${data.deck.slug}`} />
+						<div class="w-full overflow-hidden break-all">
+							<pre>{API_HOST}/api/deck/{data.deck.slug}</pre>
+						</div>
+						<div class="mr-2">
+							<CopyButton value={`${API_HOST}/api/${data.deck.slug}`} />
+						</div>
 					</div>
 					<p class="mt-4 text-sm">Method</p>
 					<div><code>POST</code></div>
