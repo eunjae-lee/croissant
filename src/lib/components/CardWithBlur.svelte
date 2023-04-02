@@ -8,13 +8,13 @@
 	$: stringSplitWithCloze = splitStringWithCloze(card.back);
 </script>
 
-<div class="mt-4 flex flex-col gap-3">
-	<div class="badge badge-outline">Front</div>
-	<div class="text-xl sm:text-2xl">
+<div class="flex flex-col gap-3">
+	<div><span class="badge variant-ghost">Front</span></div>
+	<div class="ml-1 text-xl sm:text-2xl">
 		{@html card.front.split('\n').join('<br />')}
 	</div>
-	<hr />
-	<div class="badge badge-outline">Back</div>
+	<hr class="my-4 !border-t-2 !border-dashed" />
+	<div><span class="badge variant-ghost">Back</span></div>
 	<div class="text-xl sm:text-2xl" class:blur-md={status === 'init'}>
 		{#if hasSomethingToReveal(card)}
 			{#if status === 'revealed'}

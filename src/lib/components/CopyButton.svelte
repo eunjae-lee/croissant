@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Copy } from 'lucide-svelte';
+	import { Copy, CheckCheck } from 'lucide-svelte';
 	export let value: string;
 
 	let status: 'init' | 'copied' = 'init';
@@ -14,8 +14,9 @@
 </script>
 
 <div class="tooltip flex items-center" data-tip={status === 'init' ? 'Copy' : undefined}>
-	<button type="button" on:click={copy}><Copy size={16} class="hover:opacity-75" /></button>
 	{#if status === 'copied'}
-		<span class="ml-2 text-xs">copied!</span>
+		<span class="text-xs"><CheckCheck size={16} /></span>
+	{:else}
+		<button type="button" on:click={copy}><Copy size={16} class="hover:opacity-75" /></button>
 	{/if}
 </div>

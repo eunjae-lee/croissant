@@ -8,6 +8,8 @@
 	import Container from '$lib/components/Container.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import Prompt from '$lib/components/Prompt.svelte';
+	import { Accordion, AccordionItem, AppShell, toastStore } from '@skeletonlabs/skeleton';
+	import { Info, Loader2 } from 'lucide-svelte';
 
 	export let data: PageData;
 
@@ -16,17 +18,12 @@
 
 	let status: 'init' | 'submitting' | 'error' = 'init';
 
-	let showSuccessToast: boolean;
-	let showErrorToast: boolean;
-	let errorMessage: string | undefined;
-
-	function showError(message?: string) {
-		errorMessage = message;
-		showErrorToast = true;
-		setTimeout(() => {
-			errorMessage = undefined;
-			showErrorToast = false;
-		}, 3000);
+	function showError(message: string) {
+		toastStore.trigger({
+			message,
+			timeout: 1500,
+			background: 'variant-filled-error'
+		});
 	}
 
 	async function onSubmit() {
@@ -60,10 +57,11 @@
 			showError(`Error occured. We're looking into it.`);
 		} else {
 			status = 'init';
-			showSuccessToast = true;
-			setTimeout(() => {
-				showSuccessToast = false;
-			}, 1500);
+			toastStore.trigger({
+				message: 'Card added successfully.',
+				timeout: 1500,
+				background: 'variant-filled-success'
+			});
 		}
 	}
 
@@ -93,106 +91,88 @@
 
 <MetaTags title="Add card | Croissant" />
 
-<NavBar deck={data.deck} />
+<AppShell>
+	<svelte:fragment slot="header">
+		<NavBar deck={data.deck} />
+	</svelte:fragment>
 
-<div class="mt-8">
-	<Container>
-		<details>
-			<summary>Basic Instruction</summary>
-			<div>
-				<p>Enter a JSON string containing an array of items with `front` and `back` keys.</p>
-				<code>
-					<pre class="mt-2">{@html JSON.stringify(
-							[
-								{ front: 'Hello', back: 'Bonjour' },
-								{ front: 'See you', back: 'Au {{revoir}}' }
-							],
-							null,
-							2
-						)}</pre>
-				</code>
-			</div>
-		</details>
-
-		<details>
-			<summary>Using Generative AI (e.g. ChatGPT)</summary>
-			<div>
-				<p>
-					If you're using generative AI like <a
-						href="https://chat.openai.com/"
-						target="_blank"
-						rel="noopener noreferrer">ChatGPT</a
-					>, you can ask it to generate JSON for you. The example prompts are like the following.
-				</p>
-				<div class="flex flex-col gap-4">
-					<Prompt texts={[`Write me 5 sentences I can use in a café at an A2 level.`]} />
-					<Prompt
-						texts={[
-							`Pick 3 basic verbs, and give me total 24 examples by mixing different subjects with those verbs in present tense.`
-						]}
-					/>
-					<Prompt
-						texts={[
-							`I'm about to call a real-estate agency to look for an apartment. Give me 5 basic sentences that I could use.`
-						]}
-					/>
-				</div>
-			</div>
-		</details>
-
-		<form class="card w-full bg-base-100 shadow-xl" on:submit|preventDefault={onSubmit}>
-			<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8">
-				<div bind:this={monacoElem} class="w-full h-96" />
-				<div class="card-actions justify-center">
-					<button
-						type="submit"
-						class="btn btn-primary w-full text-lg py-4 sm:text-2xl sm:py-8 h-[initial]"
-						class:loading={status === 'submitting'}
-						disabled={status === 'submitting'}>Add JSON</button
+	<div class="my-8">
+		<Container>
+			<Accordion>
+				<AccordionItem>
+					<svelte:fragment slot="lead"><Info /></svelte:fragment>
+					<svelte:fragment slot="summary">Basic Instruction</svelte:fragment>
+					<svelte:fragment slot="content">
+						<p>Enter a JSON string containing an array of items with `front` and `back` keys.</p>
+						<pre class="mt-2">{@html JSON.stringify(
+								[
+									{ front: 'Hello', back: 'Bonjour' },
+									{ front: 'See you', back: 'Au {{revoir}}' }
+								],
+								null,
+								2
+							)}</pre>
+					</svelte:fragment>
+				</AccordionItem>
+				<AccordionItem>
+					<svelte:fragment slot="lead"><Info /></svelte:fragment>
+					<svelte:fragment slot="summary">Using Generative AI (e.g. ChatGPT)</svelte:fragment>
+					<svelte:fragment slot="content"
+						><p>
+							If you're using generative AI like <a
+								href="https://chat.openai.com/"
+								target="_blank"
+								rel="noopener noreferrer">ChatGPT</a
+							>, you can ask it to generate JSON for you. The example prompts are like the
+							following.
+						</p>
+						<div class="flex flex-col gap-4">
+							<Prompt texts={[`Write me 5 sentences I can use in a café at an A2 level.`]} />
+							<Prompt
+								texts={[
+									`Pick 3 basic verbs, and give me total 24 examples by mixing different subjects with those verbs in present tense.`
+								]}
+							/>
+							<Prompt
+								texts={[
+									`I'm about to call a real-estate agency to look for an apartment. Give me 5 basic sentences that I could use.`
+								]}
+							/>
+						</div></svelte:fragment
 					>
-				</div>
-			</div>
-		</form>
-		<div class="mt-4 flex justify-between">
-			<a href="./add" class="btn btn-ghost opacity-50 hover:opacity-100">Add card</a>
-			<a href="./play" class="btn btn-ghost opacity-50 hover:opacity-100">Play cards ?</a>
-		</div>
-	</Container>
+				</AccordionItem>
+			</Accordion>
 
-	{#if showSuccessToast}
-		<div class="mt-12 toast toast-top toast-end">
-			<div class="alert alert-success">
-				<div>
-					<span>Card added successfully.</span>
+			<form class="mt-8 card" on:submit|preventDefault={onSubmit}>
+				<div class="card-body p-4 gap-4 sm:p-8 sm:gap-8 relative">
+					<div bind:this={monacoElem} class="w-full h-96" />
+					{#if !editor}
+						<div class="loader-wrapper">
+							<Loader2 />
+						</div>
+					{/if}
+					<div class="card-actions justify-center">
+						<button
+							type="submit"
+							class="mt-4 btn btn-lg sm:btn-xl variant-soft-primary w-full"
+							class:loading={status === 'submitting'}
+							disabled={status === 'submitting'}>Add JSON</button
+						>
+					</div>
 				</div>
+			</form>
+			<div class="mt-4 flex justify-between">
+				<a href="./add" class="btn variant-soft">Add card</a>
+				<a href="./play" class="btn variant-soft">Play cards ?</a>
 			</div>
-		</div>
-	{/if}
-
-	{#if showErrorToast}
-		<div class="mt-12 toast toast-top toast-end">
-			<div class="alert alert-error">
-				<div>
-					<span>{errorMessage}</span>
-				</div>
-			</div>
-		</div>
-	{/if}
-</div>
+		</Container>
+	</div>
+</AppShell>
 
 <style>
-	details {
-		@apply mb-4;
-	}
-	summary {
-		@apply ml-2 cursor-pointer;
-	}
-
-	summary + div {
-		@apply ml-2;
-	}
-
-	pre {
-		@apply border border-base-content rounded-lg py-2 px-4;
+	.loader-wrapper {
+		@apply absolute animate-spin text-primary-500;
+		top: calc(50% - 3rem);
+		left: calc(50% - 1rem);
 	}
 </style>

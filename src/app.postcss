@@ -1,36 +1,4 @@
-/* Write your global styles here, in PostCSS syntax */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-html {
-	background-color: rgba(224, 168, 46, 0.05) !important;
-}
-
-/* https://twitter.com/Saadeghi/status/1635902310177021952 */
-@media (hover: none) {
-	.btn:hover {
-		@apply bg-neutral;
-	}
-	.btn-primary:hover {
-		@apply bg-primary;
-	}
-	.btn-secondary:hover {
-		@apply bg-secondary;
-	}
-	.btn-accent:hover {
-		@apply bg-accent;
-	}
-	.btn-outline.btn:hover {
-		@apply bg-transparent text-neutral;
-	}
-	.btn-outline.btn-primary:hover {
-		@apply bg-transparent text-primary;
-	}
-	.btn-outline.btn-secondary:hover {
-		@apply bg-transparent text-secondary;
-	}
-	.btn-outline.btn-accent:hover {
-		@apply bg-transparent text-accent;
-	}
+html,
+body {
+	@apply h-full overflow-hidden;
 }
