@@ -28,7 +28,9 @@
 	slotDefault="place-self-center"
 	slotTrail="place-content-end"
 	><svelte:fragment slot="lead">
-		<a href="/" class="btn btn-ghost normal-case text-xl"><Logo /></a>
+		<div class="ml-2">
+			<a href="/"><Logo /></a>
+		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
 		<ul class="flex gap-2 sm:gap-4 px-1">
@@ -37,7 +39,7 @@
 					<a
 						href={item.href}
 						class="btn"
-						class:variant-ghost-secondary={!item.active}
+						class:variant-soft-secondary={!item.active}
 						class:variant-filled-secondary={item.active}>{item.title}</a
 					>
 				</li>

@@ -32,14 +32,16 @@
 			slotDefault="place-self-center"
 			slotTrail="place-content-end"
 			><svelte:fragment slot="lead">
-				<Logo />
+				<div class="ml-2">
+					<Logo />
+				</div>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<ul>
+				<ul class="flex gap-2 sm:gap-4 px-1">
 					{#if data.session}
-						<li><a class="btn variant-ghost-secondary" href="/decks">Decks</a></li>
+						<li><a class="btn variant-soft-secondary" href="/decks">Decks</a></li>
 					{:else}
-						<li><a class="btn variant-ghost-secondary" href="/sign_in">Sign In</a></li>
+						<li><a class="btn variant-soft-secondary" href="/sign_in">Sign In</a></li>
 					{/if}
 				</ul>
 			</svelte:fragment>
