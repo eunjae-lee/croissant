@@ -112,12 +112,18 @@
 			<div><span class="badge variant-ghost">Back</span></div>
 			<div bind:this={inputWrapper} class="text-xl sm:text-2xl">
 				{#if singleInputForWholeCard}
-					<textarea
-						class="textarea w-full text-xl sm:text-2xl"
-						disabled={status !== 'init'}
-						rows={4}
-						bind:value={valueForWholeCard}
-					/>
+					{#if status === 'revealed'}
+						<div class="ml-1 text-xl sm:text-2xl">
+							{@html (valueForWholeCard || '').split('\n').join('<br />')}
+						</div>
+					{:else}
+						<textarea
+							class="textarea w-full text-xl sm:text-2xl"
+							disabled={status !== 'init'}
+							rows={4}
+							bind:value={valueForWholeCard}
+						/>
+					{/if}
 				{:else}
 					{#each stringSplitWithCloze as item, index (index)}
 						{#if item.type === 'text'}
