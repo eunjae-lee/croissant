@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
+	import Logo from '$lib/components/Logo.svelte';
 
 	export let data: PageData;
 
@@ -36,9 +37,7 @@
 	<svelte:fragment slot="header">
 		<AppBar background="bg-surface-200"
 			><svelte:fragment slot="lead">
-				<h1>
-					<a href="/">🥐</a>
-				</h1>
+				<a href="/"><Logo /></a>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>

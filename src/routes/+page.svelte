@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { redirect } from '@sveltejs/kit';
+	import Logo from '$lib/components/Logo.svelte';
 
 	export let data: PageData;
 
@@ -31,9 +32,8 @@
 			slotDefault="place-self-center"
 			slotTrail="place-content-end"
 			><svelte:fragment slot="lead">
-				<h1>🥐</h1>
+				<Logo />
 			</svelte:fragment>
-			<h1 class="font-bold">Croissant</h1>
 			<svelte:fragment slot="trail">
 				<ul>
 					{#if data.session}
@@ -64,7 +64,7 @@
 	<svelte:fragment slot="footer">
 		<div class="flex justify-between py-2 px-4">
 			<div class="flex items-center">
-				<span class="text-lg">🥐</span>
+				<Logo size="sm" />
 				<p class="ml-2">Copyright © {new Date().getFullYear()}</p>
 			</div>
 			<div class="flex">

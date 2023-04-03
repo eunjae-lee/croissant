@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import type { Deck } from '$lib/types';
 	import { AppBar } from '@skeletonlabs/skeleton';
+	import Logo from './Logo.svelte';
 
 	export let deck: Deck | undefined = undefined;
 
@@ -27,7 +28,7 @@
 	slotDefault="place-self-center"
 	slotTrail="place-content-end"
 	><svelte:fragment slot="lead">
-		<a href="/" class="btn btn-ghost normal-case text-xl"><h1>🥐</h1></a>
+		<a href="/" class="btn btn-ghost normal-case text-xl"><Logo /></a>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
 		<ul class="flex gap-2 sm:gap-4 px-1">

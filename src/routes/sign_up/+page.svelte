@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
-	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import { AppBar, AppShell } from '@skeletonlabs/skeleton';
+	import Logo from '$lib/components/Logo.svelte';
 
 	export let data: PageData;
 
@@ -32,9 +32,7 @@
 	<svelte:fragment slot="header">
 		<AppBar background="bg-surface-200"
 			><svelte:fragment slot="lead">
-				<h1>
-					<a href="/">🥐</a>
-				</h1>
+				<a href="/"><Logo /></a>
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
@@ -45,7 +43,7 @@
 				class="card py-4 px-6 w-full max-w-md flex flex-col gap-4"
 				on:submit|preventDefault={onSubmit}
 			>
-				<h2 class="my-4">Welcome to 🥐</h2>
+				<h2 class="my-4">Welcome 🙌</h2>
 				<input type="text" placeholder="Email" class="input" bind:value={email} required />
 				<input
 					type="password"
