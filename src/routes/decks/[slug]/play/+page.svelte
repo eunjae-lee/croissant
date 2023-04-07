@@ -7,11 +7,11 @@
 	import type { PageData } from './$types';
 	import Congrats from '$lib/components/Congrats.svelte';
 	import type { Card, Score } from '$lib/types';
-	import { SPACE_PER_BOX, type BOX_NUMBER } from './const';
 	import Container from '$lib/components/Container.svelte';
 	import PlayWithInput from '$lib/components/PlayWithInput.svelte';
 	import { Info } from 'lucide-svelte';
 	import { AppShell, SlideToggle } from '@skeletonlabs/skeleton';
+	import { boxSettingsSchema } from '$lib/schemas';
 
 	export let data: PageData;
 
@@ -21,38 +21,28 @@
 	let cardsToReview: Card[] = [];
 	let reviewingMistakes = false;
 
+	let boxSettings = boxSettingsSchema.parse(data.deck.box_settings);
+
 	$: currentCard = reviewingMistakes ? cardsToReview[currentIndex] : data.cards[currentIndex];
 	$: totalNumberOfCards = reviewingMistakes ? cardsToReview.length : data.cards.length;
 
 	const HARD_MODE_ADVANTAGE = 3;
 
-	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: BOX_NUMBER }) => {
+	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: number }) => {
+		const ALPHA = 4; // 4 hours
 		const now = new Date();
 		const next = add(now, {
-			hours: SPACE_PER_BOX[boxNumber]
+			hours: boxSettings.intervals[boxNumber - 1] * 24 - ALPHA
 		});
 		await data.supabase
 			.from('cards')
 			.update({
 				box: boxNumber,
 				last_played_ts: now.toISOString(),
-				next_play_ts: next.toISOString()
+				next_play_ts: next.toISOString(),
+				learn: boxNumber <= boxSettings.intervals.length
 			})
 			.eq('id', cardId);
-	};
-
-	const bumpUp = async ({ card }: { card: Card }) => {
-		await assignToBox({
-			cardId: card.id,
-			boxNumber: (card.box + 1) as BOX_NUMBER
-		});
-	};
-
-	const bumpDown = async ({ card }: { card: Card }) => {
-		await assignToBox({
-			cardId: card.id,
-			boxNumber: Math.max(card.box - 1, 1) as BOX_NUMBER
-		});
 	};
 
 	const onSubmit = async (score: Score) => {
@@ -62,14 +52,24 @@
 		}
 		if (!reviewingMistakes) {
 			if (score === 1) {
+				const boxNumber =
+					boxSettings.when_wrong === 'to_first' ? 1 : Math.max(currentCard.box - 1, 1);
 				await assignToBox({
 					cardId: currentCard.id,
-					boxNumber: 1
+					boxNumber: boxNumber
 				});
 			} else if (score === 2) {
-				await bumpDown({ card: currentCard });
+				// keep it in the same box, but run the following
+				// so that it could update the next_play_ts
+				await assignToBox({
+					cardId: currentCard.id,
+					boxNumber: currentCard.box
+				});
 			} else if (score === 3) {
-				await bumpUp({ card: currentCard });
+				await assignToBox({
+					cardId: currentCard.id,
+					boxNumber: currentCard.box + 1
+				});
 			}
 		}
 		await data.supabase.rpc('update_deck_score', {

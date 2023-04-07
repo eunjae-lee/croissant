@@ -79,13 +79,16 @@
 					<section>
 						<h2 class="text-xl">Basic Information</h2>
 						<div class="mt-4 flex gap-2 items-center">
+							<label class="label">
+								<span>Name</span>
+							</label>
 							<input type="text" class="input" bind:value={data.deck.name} />
 							<button type="button" class="btn variant-soft-primary" on:click={save}>Save</button>
 						</div>
 					</section>
 
 					<section>
-						<BoxSettings deck={data.deck} />
+						<BoxSettings deck={data.deck} supabase={data.supabase} />
 					</section>
 
 					<section>
