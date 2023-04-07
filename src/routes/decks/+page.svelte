@@ -91,7 +91,7 @@
 					<div class="card bg-surface-200">
 						<header class="card-header flex items-center justify-between">
 							<h3>
-								<span>{deck.name}</span>
+								<span class="text-3xl font-cursive">{deck.name}</span>
 								<span class="ml-2 font-normal text-sm"
 									>{formatNumber(deck.play_score_sum || 0)}XP</span
 								>
