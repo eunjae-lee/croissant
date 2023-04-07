@@ -106,6 +106,7 @@ export interface Database {
       }
       decks: {
         Row: {
+          box_settings: string | null
           created_ts: string
           deleted: boolean | null
           hard_mode: boolean | null
@@ -119,6 +120,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
+          box_settings?: string | null
           created_ts?: string
           deleted?: boolean | null
           hard_mode?: boolean | null
@@ -132,6 +134,7 @@ export interface Database {
           user_id: string
         }
         Update: {
+          box_settings?: string | null
           created_ts?: string
           deleted?: boolean | null
           hard_mode?: boolean | null
@@ -325,7 +328,7 @@ export interface Database {
         Args: {
           name: string
         }
-        Returns: string[]
+        Returns: unknown
       }
       get_size_by_bucket: {
         Args: Record<PropertyKey, never>
