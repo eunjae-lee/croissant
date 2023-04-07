@@ -39,7 +39,7 @@
 			<svelte:fragment slot="trail">
 				<ul class="flex gap-2 sm:gap-4 px-1">
 					{#if data.session}
-						<li><a class="btn variant-soft-secondary" href="/decks">Decks</a></li>
+						<li><a class="btn variant-soft-secondary !bg-transparent" href="/decks">Decks</a></li>
 					{:else}
 						<li><a class="btn variant-soft-secondary" href="/sign_in">Sign In</a></li>
 					{/if}

@@ -8,6 +8,6 @@
 	h1 {
 		font-family: 'Reenie Beanie', cursive;
 		font-weight: 400;
-		color: rgb(var(--color-primary-500) / 1);
+		color: rgb(var(--theme-font-color-base) / 1);
 	}
 </style>
