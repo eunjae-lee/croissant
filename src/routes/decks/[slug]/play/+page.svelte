@@ -21,7 +21,7 @@
 	let cardsToReview: Card[] = [];
 	let reviewingMistakes = false;
 
-	let boxSettings = boxSettingsSchema.parse(data.deck.box_settings);
+	let boxSettings = boxSettingsSchema.parse(JSON.parse(data.deck.box_settings!));
 
 	$: currentCard = reviewingMistakes ? cardsToReview[currentIndex] : data.cards[currentIndex];
 	$: totalNumberOfCards = reviewingMistakes ? cardsToReview.length : data.cards.length;
