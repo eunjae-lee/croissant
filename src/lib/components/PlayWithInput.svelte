@@ -5,7 +5,8 @@
 		compareTextLoosely,
 		hasSomethingToReveal,
 		splitStringWithCloze,
-		type StringsSplitWithCloze
+		type StringsSplitWithCloze,
+		type TextComparisonResult
 	} from '$lib/utils';
 	import Container from './Container.svelte';
 	import AutoResizingInput from './AutoResizingInput.svelte';
@@ -24,20 +25,20 @@
 	let valueForWholeCard: string | undefined;
 
 	let revealedScore: Score | undefined;
+	let clozeComparisionResults: TextComparisonResult[];
 
-	$: if (card) {
-		stringSplitWithCloze = splitStringWithCloze(card.back);
-		inputValues = Array(stringSplitWithCloze.length).fill(undefined);
-		singleInputForWholeCard = !hasSomethingToReveal(card);
-	}
+	stringSplitWithCloze = splitStringWithCloze(card.back);
+	clozeComparisionResults = [];
+	inputValues = Array(stringSplitWithCloze.length).fill(undefined);
+	singleInputForWholeCard = !hasSomethingToReveal(card);
 
 	async function submit() {
 		status = 'submitting';
-		revealedScore = getScore();
+		calcScore();
 		if (revealedScore === 3) {
 			new Confetti().addConfetti({ confettiNumber: 20 });
 		}
-		await onSubmit(revealedScore);
+		await onSubmit(revealedScore!);
 		status = 'revealed';
 	}
 
@@ -58,16 +59,18 @@
 		return score !== null;
 	};
 
-	function getScore() {
+	function calcScore() {
 		if (singleInputForWholeCard) {
 			const result = compareTextLoosely(valueForWholeCard, card.back);
-			return SCORE_MAP[result] as Score;
+			revealedScore = SCORE_MAP[result] as Score;
 		} else {
-			return Math.min(
+			clozeComparisionResults = [];
+			const finalScore = Math.min(
 				...stringSplitWithCloze
 					.map((piece, index) => {
 						if (piece.type === 'cloze') {
 							const result = compareTextLoosely(inputValues[index], piece.content);
+							clozeComparisionResults[index] = result;
 							return SCORE_MAP[result];
 						} else {
 							return null;
@@ -75,6 +78,8 @@
 					})
 					.filter(notNull)
 			) as Score;
+
+			revealedScore = finalScore;
 		}
 	}
 
@@ -88,21 +93,6 @@
 
 <Container>
 	<div class="mt-2 card py-4">
-		<header class="card-header flex justify-center flex-nowrap h-24 sm:h-32">
-			{#if status === 'init'}
-				<button
-					type="button"
-					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
-					on:click={submit}>Check the answer</button
-				>
-			{:else if status === 'revealed'}
-				<button
-					type="button"
-					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
-					on:click={goToNext}>Next question</button
-				>
-			{/if}
-		</header>
 		<section class="mt-4 p-4 flex flex-col gap-3">
 			<div><span class="badge variant-ghost">Front</span></div>
 			<div class="ml-1 text-xl sm:text-2xl">
@@ -129,14 +119,25 @@
 						{#if item.type === 'text'}
 							<span>{@html item.content.split('\n').join('<br />')}</span>
 						{:else if item.type === 'cloze'}
-							<AutoResizingInput
-								key={card.id}
-								disabled={status !== 'init'}
-								maxWidth={inputWrapperWidth - 42}
-								onInput={(text) => {
-									inputValues[index] = text;
-								}}
-							/>
+							{#if status === 'revealed'}
+								<span
+									class="inline-block my-2 text-xl sm:text-2xl py-1 px-1 sm:px-2"
+									class:text-error-600={clozeComparisionResults[index] === 'different'}
+									class:text-warning-600={clozeComparisionResults[index] ===
+										'only-different-accents'}
+									class:text-success-700={clozeComparisionResults[index] === 'equal'}
+									>{inputValues[index]}</span
+								>
+							{:else}
+								<AutoResizingInput
+									key={card.id}
+									disabled={status !== 'init'}
+									maxWidth={inputWrapperWidth - 42}
+									onInput={(text) => {
+										inputValues[index] = text;
+									}}
+								/>
+							{/if}
 						{/if}
 					{/each}
 				{/if}
@@ -156,12 +157,28 @@
 							{#if item.type === 'text'}
 								<span>{@html item.content.split('\n').join('<br />')}</span>
 							{:else if item.type === 'cloze'}
-								<span class="font-bold">{@html item.content.split('\n').join('<br />')}</span>
+								<span>{@html item.content.split('\n').join('<br />')}</span>
 							{/if}
 						{/each}
 					</div>
 				</div>
 			{/if}
 		</section>
+
+		<div class="card-header flex justify-center flex-nowrap h-24 sm:h-32">
+			{#if status === 'init'}
+				<button
+					type="button"
+					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					on:click={submit}>Check the answer</button
+				>
+			{:else if status === 'revealed'}
+				<button
+					type="button"
+					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					on:click={goToNext}>Next question</button
+				>
+			{/if}
+		</div>
 	</div>
 </Container>

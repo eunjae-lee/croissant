@@ -131,11 +131,13 @@
 				</div>
 			</Container>
 		</div>
-		{#if hardMode}
-			<PlayWithInput card={currentCard} {onNext} {onSubmit} />
-		{:else}
-			<PlayWithBlur card={currentCard} {onNext} {onSubmit} />
-		{/if}
+		{#key currentCard.id}
+			{#if hardMode}
+				<PlayWithInput card={currentCard} {onNext} {onSubmit} />
+			{:else}
+				<PlayWithBlur card={currentCard} {onNext} {onSubmit} />
+			{/if}
+		{/key}
 		<Container>
 			<div class="my-4 flex justify-end">
 				<a href="./add" class="btn variant-soft">Add cards ?</a>
