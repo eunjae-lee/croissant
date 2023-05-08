@@ -93,6 +93,22 @@
 
 <Container>
 	<div class="mt-2 card py-4">
+		<div class="card-header flex justify-center flex-nowrap h-24 sm:h-32">
+			{#if status === 'init'}
+				<button
+					type="button"
+					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					on:click={submit}>Check the answer</button
+				>
+			{:else if status === 'revealed'}
+				<button
+					type="button"
+					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					on:click={goToNext}>Next question</button
+				>
+			{/if}
+		</div>
+
 		<section class="mt-4 p-4 flex flex-col gap-3">
 			<div><span class="badge variant-ghost">Front</span></div>
 			<div class="ml-1 text-xl sm:text-2xl">
