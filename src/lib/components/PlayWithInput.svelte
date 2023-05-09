@@ -180,21 +180,5 @@
 				</div>
 			{/if}
 		</section>
-
-		<div class="card-header flex justify-center flex-nowrap h-24 sm:h-32">
-			{#if status === 'init'}
-				<button
-					type="button"
-					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
-					on:click={submit}>Check the answer</button
-				>
-			{:else if status === 'revealed'}
-				<button
-					type="button"
-					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
-					on:click={goToNext}>Next question</button
-				>
-			{/if}
-		</div>
 	</div>
 </Container>
