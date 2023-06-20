@@ -57,9 +57,27 @@
 	}
 
 	async function deleteDeck() {
-		if (confirm('Do you really want to delete the deck and all the cards?')) {
+		if (
+			confirm('Do you really want to delete the deck and all the cards? You cannot restore them.')
+		) {
 			await data.supabase.rpc('delete_deck', { param_deck_id: data.deck.id });
 			showToast('Deleted!');
+			goto('/decks');
+		}
+	}
+
+	async function archiveDeck() {
+		if (confirm('Do you want to archive the deck?')) {
+			await data.supabase.from('decks').update({ archived: true }).eq('id', data.deck.id);
+			showToast('Archived!');
+			goto('/decks');
+		}
+	}
+
+	async function unarchiveDeck() {
+		if (confirm('Do you want to unarchive the deck?')) {
+			await data.supabase.from('decks').update({ archived: false }).eq('id', data.deck.id);
+			showToast('Unarchived!');
 			goto('/decks');
 		}
 	}
@@ -158,7 +176,28 @@
 
 					<section>
 						<h2 class="text-xl">Dangerous Area</h2>
-						<p class="mt-2">This will delete the deck and all the cards inside it.</p>
+
+						{#if !data.deck.archived}
+							<p class="mt-2">You can archive this deck. You can always unarchive it.</p>
+							<button type="button" class="mt-2 btn variant-filled-warning" on:click={archiveDeck}>
+								Archive the deck</button
+							>
+						{/if}
+
+						{#if data.deck.archived}
+							<p class="mt-2">You can unarchive this deck.</p>
+							<button
+								type="button"
+								class="mt-2 btn variant-filled-primary"
+								on:click={unarchiveDeck}
+							>
+								Unarchive the deck</button
+							>
+						{/if}
+
+						<p class="mt-8">
+							This will delete the deck and all the cards inside it. You cannot restore them.
+						</p>
 						<button type="button" class="mt-2 btn variant-filled-error" on:click={deleteDeck}
 							>Delete the deck</button
 						>

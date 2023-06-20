@@ -42,6 +42,7 @@ alter table decks add column play_score_sum bigint default 0;
 alter table decks add column hard_mode boolean default false;
 alter table decks add column deleted boolean default false;
 alter table decks add column box_settings text default '{"intervals":[1,2,5,8,14],"when_wrong":"back"}';
+alter table decks add column archived boolean default false;
 
 create or replace function public.update_deck_score(deck_id uuid, score smallint)
 returns void as $$

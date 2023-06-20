@@ -6,10 +6,12 @@
 	import type { PageData } from './$types';
 	import Container from '$lib/components/Container.svelte';
 	import { AppShell } from '@skeletonlabs/skeleton';
+	import DeckCard from './DeckCard.svelte';
 
 	export let data: PageData;
 	let decks: Deck[] = [];
 	let status: 'init' | 'loaded';
+	let showArchivedDecks = false;
 
 	type CardsToPlay = {
 		[deckId: string]: {
@@ -87,55 +89,8 @@
 	<div class="my-8">
 		<Container>
 			<div class="grid gap-8 md:grid-cols-2">
-				{#each decks as deck (deck.id)}
-					<div class="card bg-surface-200">
-						<header class="card-header flex items-center justify-between">
-							<h3>
-								<span class="text-3xl font-cursive">{deck.name}</span>
-								<span class="ml-2 font-normal text-sm"
-									>{formatNumber(deck.play_score_sum || 0)}XP</span
-								>
-							</h3>
-							<a href={`/decks/${deck.slug}/info`} class="btn variant-soft-surface"><Info /></a>
-						</header>
-
-						<section class="p-4 flex flex-col gap-4 my-4">
-							<div>
-								<p class="text-sm opacity-75">Total Cards</p>
-								<p class="text-2xl font-bold">
-									{totalCards[deck.id] ? formatNumber(totalCards[deck.id]) : '-'}
-								</p>
-							</div>
-							<div class="grid grid-cols-2">
-								<div>
-									<p class="text-sm opacity-75">To Study Today</p>
-									<p class="text-2xl font-bold">
-										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].today || 0) : '-'}
-									</p>
-								</div>
-								<div>
-									<p class="text-sm opacity-75">Tomorrow</p>
-									<p class="text-2xl font-bold">
-										{cardsToPlay[deck.id] ? formatNumber(cardsToPlay[deck.id].tomorrow || 0) : '-'}
-									</p>
-								</div>
-							</div>
-						</section>
-
-						<footer class="card-footer flex flex-nowrap justify-between">
-							<div class="flex gap-4">
-								<a href={`/decks/${deck.slug}/add`} class="btn variant-filled-primary"
-									><Plus size={18} /><span class="ml-2">New</span></a
-								>
-								<a href={`/decks/${deck.slug}/play`} class="btn variant-filled-primary"
-									><Zap size={18} /><span class="ml-2">Play</span></a
-								>
-							</div>
-							<a href={`/decks/${deck.slug}/list`} class="btn variant-soft-primary" title="List"
-								><List /></a
-							>
-						</footer>
-					</div>
+				{#each decks.filter((deck) => !deck.archived) as deck (deck.id)}
+					<DeckCard {deck} totalCards={totalCards[deck.id]} cardsToPlay={cardsToPlay[deck.id]} />
 				{/each}
 
 				{#if status === 'loaded'}
@@ -150,8 +105,22 @@
 								<button class="btn variant-soft-primary" on:click={createDeck}>Create a deck</button
 								>
 							</div>
+							{#if decks.find((deck) => deck.archived) && !showArchivedDecks}
+								<div class="mt-6 flex justify-center">
+									<button
+										class="btn btn-sm opacity-50 hover:opacity-100 variant-soft-secondary"
+										on:click={() => (showArchivedDecks = true)}>View archived decks</button
+									>
+								</div>
+							{/if}
 						</section>
 					</div>
+				{/if}
+
+				{#if showArchivedDecks}
+					{#each decks.filter((deck) => deck.archived) as deck (deck.id)}
+						<DeckCard {deck} totalCards={totalCards[deck.id]} cardsToPlay={cardsToPlay[deck.id]} />
+					{/each}
 				{/if}
 			</div>
 		</Container>

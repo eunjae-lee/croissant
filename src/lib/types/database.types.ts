@@ -56,6 +56,14 @@ export interface Database {
           updated_ts?: string | null
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "accounts_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       cards: {
         Row: {
@@ -103,9 +111,24 @@ export interface Database {
           updated_ts?: string | null
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "cards_deck_id_fkey"
+            columns: ["deck_id"]
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cards_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       decks: {
         Row: {
+          archived: boolean | null
           box_settings: string | null
           created_ts: string
           deleted: boolean | null
@@ -120,6 +143,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
+          archived?: boolean | null
           box_settings?: string | null
           created_ts?: string
           deleted?: boolean | null
@@ -134,6 +158,7 @@ export interface Database {
           user_id: string
         }
         Update: {
+          archived?: boolean | null
           box_settings?: string | null
           created_ts?: string
           deleted?: boolean | null
@@ -147,6 +172,14 @@ export interface Database {
           updated_ts?: string | null
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "decks_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
@@ -242,6 +275,14 @@ export interface Database {
           public?: boolean | null
           updated_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "buckets_owner_fkey"
+            columns: ["owner"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       migrations: {
         Row: {
@@ -262,6 +303,7 @@ export interface Database {
           id?: number
           name?: string
         }
+        Relationships: []
       }
       objects: {
         Row: {
@@ -297,6 +339,20 @@ export interface Database {
           path_tokens?: string[] | null
           updated_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "objects_bucketId_fkey"
+            columns: ["bucket_id"]
+            referencedRelation: "buckets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "objects_owner_fkey"
+            columns: ["owner"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
