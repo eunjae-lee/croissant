@@ -12,9 +12,13 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"story:dev": "histoire dev",
+		"story:build": "histoire build",
+		"story:preview": "histoire preview"
 	},
 	"devDependencies": {
+		"@histoire/plugin-svelte": "^0.16.1",
 		"@playwright/test": "^1.28.1",
 		"@skeletonlabs/skeleton": "1.1.0",
 		"@sveltejs/adapter-auto": "^2.0.0",
@@ -26,6 +30,7 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"histoire": "^0.16.1",
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.0",
@@ -52,6 +57,7 @@
 		"js-confetti": "^0.11.0",
 		"lucide-svelte": "^0.125.0",
 		"monaco-editor": "^0.36.1",
+		"simple-text-diff": "^1.7.0",
 		"zod": "^3.21.4"
 	}
 }
