@@ -21,7 +21,9 @@
 	let stringSplitWithCloze: StringsSplitWithCloze;
 	let inputValues: string[];
 
-	let singleInputForWholeCard: boolean;
+	let inputMode: 'withCloze' | 'singleInput' = hasSomethingToReveal(card)
+		? 'withCloze'
+		: 'singleInput';
 	let valueForWholeCard: string | undefined;
 
 	let revealedScore: Score | undefined;
@@ -30,7 +32,6 @@
 	stringSplitWithCloze = splitStringWithCloze(card.back);
 	clozeComparisionResults = [];
 	inputValues = Array(stringSplitWithCloze.length).fill(undefined);
-	singleInputForWholeCard = !hasSomethingToReveal(card);
 
 	async function submit() {
 		status = 'submitting';
@@ -60,10 +61,10 @@
 	};
 
 	function calcScore() {
-		if (singleInputForWholeCard) {
+		if (inputMode === 'singleInput') {
 			const result = compareTextLoosely(valueForWholeCard, card.back);
 			revealedScore = SCORE_MAP[result] as Score;
-		} else {
+		} else if (inputMode === 'withCloze') {
 			clozeComparisionResults = [];
 			const finalScore = Math.min(
 				...stringSplitWithCloze
@@ -117,7 +118,7 @@
 			<hr class="my-4 !border-t-2 !border-dashed" />
 			<div><span class="badge variant-ghost">Back</span></div>
 			<div bind:this={inputWrapper} class="text-xl sm:text-2xl">
-				{#if singleInputForWholeCard}
+				{#if inputMode === 'singleInput'}
 					{#if status === 'revealed'}
 						<div class="ml-1 text-xl sm:text-2xl">
 							{@html (valueForWholeCard || '').split('\n').join('<br />')}
@@ -130,7 +131,9 @@
 							bind:value={valueForWholeCard}
 						/>
 					{/if}
-				{:else}
+				{/if}
+
+				{#if inputMode === 'withCloze'}
 					{#each stringSplitWithCloze as item, index (index)}
 						{#if item.type === 'text'}
 							<span>{@html item.content.split('\n').join('<br />')}</span>
