@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Confetti from 'js-confetti';
+	import diff from 'simple-text-diff';
 	import type { Card, Score } from '$lib/types';
 	import {
 		compareTextLoosely,
@@ -33,6 +34,8 @@
 	clozeComparisionResults = [];
 	inputValues = Array(stringSplitWithCloze.length).fill(undefined);
 
+	let diffResult;
+
 	async function submit() {
 		status = 'submitting';
 		calcScore();
@@ -41,6 +44,13 @@
 		}
 		await onSubmit(revealedScore!);
 		status = 'revealed';
+
+		if (inputMode === 'withCloze') {
+			diffResult = undefined;
+		}
+		{
+			diffResult = diff.diffPatch(card.back, valueForWholeCard || '');
+		}
 	}
 
 	function goToNext() {
@@ -116,12 +126,21 @@
 				{@html card.front.split('\n').join('<br />')}
 			</div>
 			<hr class="my-4 !border-t-2 !border-dashed" />
-			<div><span class="badge variant-ghost">Back</span></div>
+			<div>
+				<span class="badge variant-ghost">Back</span>
+				{#if revealedScore === 3}
+					<span class="ml-1 badge variant-ghost-success">Correct</span>
+				{:else if revealedScore === 2}
+					<span class="ml-1 badge variant-ghost-warning">Wrong accents</span>
+				{:else if revealedScore === 1}
+					<span class="ml-1 badge variant-ghost-error">Wrong</span>
+				{/if}
+			</div>
 			<div bind:this={inputWrapper} class="text-xl sm:text-2xl">
 				{#if inputMode === 'singleInput'}
 					{#if status === 'revealed'}
-						<div class="ml-1 text-xl sm:text-2xl">
-							{@html (valueForWholeCard || '').split('\n').join('<br />')}
+						<div class="my-answer ml-1 text-xl sm:text-2xl">
+							{@html diffResult.after}
 						</div>
 					{:else}
 						<textarea
@@ -164,24 +183,36 @@
 
 			{#if status === 'revealed'}
 				<div class="my-8">
-					{#if revealedScore === 3}
-						<div><span class="badge text-lg variant-ghost-success">Correct</span></div>
-					{:else if revealedScore === 2}
-						<div><span class="badge text-lg variant-ghost-warning">Wrong accents</span></div>
-					{:else if revealedScore === 1}
-						<div><span class="badge text-lg variant-ghost-error">Wrong</span></div>
-					{/if}
 					<div class="mt-2 text-xl sm:text-2xl">
-						{#each stringSplitWithCloze as item, index (index)}
-							{#if item.type === 'text'}
-								<span>{@html item.content.split('\n').join('<br />')}</span>
-							{:else if item.type === 'cloze'}
-								<span>{@html item.content.split('\n').join('<br />')}</span>
-							{/if}
-						{/each}
+						<div class="mb-2">
+							<span class="badge variant-ghost">Correct Answer</span>
+						</div>
+						{#if inputMode === 'singleInput'}
+							<div class="correct-answer">
+								{@html diffResult.before}
+							</div>
+						{:else if inputMode === 'withCloze'}
+							{#each stringSplitWithCloze as item, index (index)}
+								{#if item.type === 'text'}
+									<span>{@html item.content.split('\n').join('<br />')}</span>
+								{:else if item.type === 'cloze'}
+									<span>{@html item.content.split('\n').join('<br />')}</span>
+								{/if}
+							{/each}
+						{/if}
 					</div>
 				</div>
 			{/if}
 		</section>
 	</div>
 </Container>
+
+<style>
+	.correct-answer :global(del) {
+		@apply no-underline bg-green-300;
+	}
+
+	.my-answer :global(ins) {
+		@apply line-through bg-red-300;
+	}
+</style>

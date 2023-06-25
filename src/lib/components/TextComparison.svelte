@@ -7,10 +7,10 @@
 	let result = diff.diffPatch(correctAnswer, yourAnswer);
 </script>
 
-correct
+<h1>correct</h1>
 <div class="correct-answer">{@html result.before}</div>
 
-your answer
+<h1>your answer</h1>
 <div class="your-answer">{@html result.after}</div>
 
 <style>
