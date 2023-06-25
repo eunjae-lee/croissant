@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
 	import Confetti from 'js-confetti';
-	import { add } from 'date-fns';
+	import { add, startOfTomorrow } from 'date-fns';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import PlayWithBlur from '$lib/components/PlayWithBlur.svelte';
 	import type { PageData } from './$types';
@@ -29,10 +29,9 @@
 	const HARD_MODE_ADVANTAGE = 3;
 
 	const assignToBox = async ({ cardId, boxNumber }: { cardId: string; boxNumber: number }) => {
-		const ALPHA = 4; // 4 hours
 		const now = new Date();
-		const next = add(now, {
-			hours: boxSettings.intervals[boxNumber - 1] * 24 - ALPHA
+		const next = add(startOfTomorrow(), {
+			days: boxSettings.intervals[boxNumber - 1] - 1
 		});
 		await data.supabase
 			.from('cards')
