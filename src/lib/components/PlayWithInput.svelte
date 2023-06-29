@@ -209,10 +209,10 @@
 
 <style>
 	.correct-answer :global(del) {
-		@apply no-underline bg-green-300;
+		@apply no-underline bg-green-300 inline-block before:content-[''] py-1 px-2 mx-2 rounded-md;
 	}
 
 	.my-answer :global(ins) {
-		@apply line-through bg-red-300;
+		@apply line-through bg-red-300 inline-block before:content-[''] py-1 px-2 mx-2 rounded-md;
 	}
 </style>
