@@ -432,12 +432,13 @@
     "@sentry/types" "7.42.0"
     tslib "^1.9.3"
 
-"@skeletonlabs/skeleton@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@skeletonlabs/skeleton/-/skeleton-1.1.0.tgz#360f6952c3ea37c8e99be75b1aac1c7410a4ae5f"
-  integrity sha512-dkogVhYYQUzt1nXBMeal39suelaY7zejGPBc/5mjtfzvWjDF3KridZQwtSZrb81XlAFYGttHlcYCqSojywFGUQ==
+"@skeletonlabs/skeleton@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@skeletonlabs/skeleton/-/skeleton-1.8.0.tgz#1842df76272c24903977fa018b3067c7476c6e1a"
+  integrity sha512-dO4ukU34MGUY1yA1Gln+YUFEEew25AHm6GMpbzCOX8p8b9NmVBWiSuF3me9jnbrV15TGJxmUGzdiRN/70b4KIg==
   dependencies:
-    svelte "^3.55.1"
+    esm-env "1.0.0"
+    svelte "3.58.0"
 
 "@supabase/auth-helpers-shared@0.3.0":
   version "0.3.0"
@@ -1432,7 +1433,7 @@ eslint@^8.28.0:
     strip-json-comments "^3.1.0"
     text-table "^0.2.0"
 
-esm-env@^1.0.0:
+esm-env@1.0.0, esm-env@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/esm-env/-/esm-env-1.0.0.tgz#b124b40b180711690a4cb9b00d16573391950413"
   integrity sha512-Cf6VksWPsTuW01vU9Mk/3vRue91Zevka5SjyNf3nEpokFRuqt/KjUQoGAwq9qMmhpLTHmXzSIrFRw8zxWzmFBA==
@@ -2939,15 +2940,15 @@ svelte-preprocess@^5.0.0:
     sorcery "^0.11.0"
     strip-indent "^3.0.0"
 
+svelte@3.58.0:
+  version "3.58.0"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.58.0.tgz#d3e6f103efd6129e51c7d709225ad3b4c052b64e"
+  integrity sha512-brIBNNB76mXFmU/Kerm4wFnkskBbluBDCjx/8TcpYRb298Yh2dztS2kQ6bhtjMcvUhd5ynClfwpz5h2gnzdQ1A==
+
 svelte@^3.54.0:
   version "3.55.1"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.55.1.tgz#6f93b153e5248039906ce5fe196efdb9e05dfce8"
   integrity sha512-S+87/P0Ve67HxKkEV23iCdAh/SX1xiSfjF1HOglno/YTbSTW7RniICMCofWGdJJbdjw3S+0PfFb1JtGfTXE0oQ==
-
-svelte@^3.55.1:
-  version "3.57.0"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.57.0.tgz#a3969cfe51f25f2a55e75f7b98dbd02c3af0980b"
-  integrity sha512-WMXEvF+RtAaclw0t3bPDTUe19pplMlfyKDsixbHQYgCWi9+O9VN0kXU1OppzrB9gPAvz4NALuoca2LfW2bOjTQ==
 
 symbol-tree@^3.2.4:
   version "3.2.4"

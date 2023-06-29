@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Deck } from '$lib/types';
-	import { Info, Plus, Zap, List } from 'lucide-svelte';
+	import { Info, Plus, Zap, List, CreditCard } from 'lucide-svelte';
 
 	export let deck: Deck;
 	export let totalCards: number;
@@ -52,15 +52,18 @@
 		</div>
 	</section>
 
-	<footer class="card-footer flex flex-nowrap justify-between">
-		<div class="flex gap-4">
-			<a href={`/decks/${deck.slug}/add`} class="btn variant-filled-primary"
-				><Plus size={18} /><span class="ml-2">New</span></a
-			>
-			<a href={`/decks/${deck.slug}/play`} class="btn variant-filled-primary"
-				><Zap size={18} /><span class="ml-2">Play</span></a
-			>
-		</div>
-		<a href={`/decks/${deck.slug}/list`} class="btn variant-soft-primary" title="List"><List /></a>
+	<footer class="card-footer flex flex-nowrap justify-between gap-2">
+		<a href={`/decks/${deck.slug}/add`} class="btn variant-filled-primary"
+			><Plus size={18} /><span class="ml-2">New</span></a
+		>
+		<a href={`/decks/${deck.slug}/play`} class="btn variant-filled-primary"
+			><Zap size={18} /><span class="ml-2">Play</span></a
+		>
+		<a href={`/decks/${deck.slug}/cards`} class="btn btn-sm variant-soft-primary" title="Cards"
+			><CreditCard size={16} /></a
+		>
+		<a href={`/decks/${deck.slug}/list`} class="btn btn-sm variant-soft-primary" title="List"
+			><List size={16} /></a
+		>
 	</footer>
 </div>
