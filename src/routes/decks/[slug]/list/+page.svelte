@@ -6,14 +6,19 @@
 	import EditableCard from '$lib/components/EditableCard.svelte';
 	import type { Card } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { Plus } from 'lucide-svelte';
+	import { Plus, ArrowUpDown, Scaling } from 'lucide-svelte';
 	import { AppShell } from '@skeletonlabs/skeleton';
+	import { dndzone } from 'svelte-dnd-action';
+	import { flip } from 'svelte/animate';
 
 	export let data: PageData;
 
 	let cards: Card[] = [];
 
 	let loading: boolean;
+	let compact = false;
+
+	$: console.log('cards', cards);
 
 	async function addNewCard() {
 		loading = true;
@@ -73,6 +78,26 @@
 		await loadCards();
 	}
 
+	function handleConsiderSort(event) {
+		cards = event.detail.items;
+	}
+
+	async function handleFinalizeSort(event) {
+		cards = event.detail.items;
+		for (const [index, card] of cards.entries()) {
+			const newNumOrder = cards.length - index;
+			if (card.num_order !== newNumOrder) {
+				await data.supabase
+					.from('cards')
+					.update({
+						num_order: newNumOrder
+					})
+					.eq('id', card.id);
+				card.num_order = newNumOrder;
+			}
+		}
+	}
+
 	onMount(loadCards);
 </script>
 
@@ -85,7 +110,7 @@
 
 	<div class="my-8">
 		<Container>
-			<div class="">
+			<div class="flex justify-between">
 				<button
 					type="button"
 					class="btn variant-soft-primary"
@@ -93,19 +118,50 @@
 					disabled={loading}
 					on:click={addNewCard}><Plus /><span>New Card</span></button
 				>
+
+				<button type="button" class="btn variant-soft-primary" on:click={() => (compact = !compact)}
+					><Scaling class="mr-2" />{compact ? 'Enlarge' : 'Compact'}</button
+				>
 			</div>
-			<div class="my-8 flex flex-col gap-8">
+			<div
+				use:dndzone={{
+					items: cards,
+					flipDurationMs: 300,
+					dropTargetStyle: {
+						outline: 'rgba(211, 149, 14, 0.5) solid 2px',
+						borderRadius: '0.25rem',
+						padding: '1rem'
+					}
+				}}
+				on:consider={handleConsiderSort}
+				on:finalize={handleFinalizeSort}
+				class="scroll-wrapper mt-8 flex flex-col gap-8"
+			>
 				{#each cards as card, index (card.id)}
-					<EditableCard
-						{card}
-						supabase={data.supabase}
-						{onMoveUp}
-						{onMoveDown}
-						isFirstCard={index === 0}
-						isLastCard={index === cards.length - 1}
-					/>
+					<div animate:flip={{ duration: 300 }}>
+						<EditableCard
+							{card}
+							supabase={data.supabase}
+							{onMoveUp}
+							{onMoveDown}
+							isFirstCard={index === 0}
+							isLastCard={index === cards.length - 1}
+							{compact}
+						/>
+					</div>
 				{/each}
 			</div>
 		</Container>
 	</div>
 </AppShell>
+
+<style>
+	.scroll-wrapper {
+		height: calc(100vh - 13rem);
+		overflow: scroll;
+	}
+
+	:global(#page-content) {
+		overflow: hidden;
+	}
+</style>

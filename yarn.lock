@@ -2085,10 +2085,10 @@ lru_map@^0.3.3:
   resolved "https://registry.yarnpkg.com/lru_map/-/lru_map-0.3.3.tgz#b5c8351b9464cbd750335a79650a0ec0e56118dd"
   integrity sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==
 
-lucide-svelte@^0.125.0:
-  version "0.125.0"
-  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.125.0.tgz#87c48178d6816baeda62ca4a1cbc93b1d8c8e38b"
-  integrity sha512-IP0uFGUBUe30H/dKhmvQbRkHQaFLM5klJljjLTCUSsrIAbGjPWkqPVjYUXl8VVqnFYLR9l8qJq1Bt4QYUq+hog==
+lucide-svelte@^0.257.0:
+  version "0.257.0"
+  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.257.0.tgz#0d92b05651071cce450c472d2d304d4cb6694671"
+  integrity sha512-URC6Yg0VTLlRWc0QU2JDK9Aiyup9BCd3D1ybmVd6kIOJR0JDEsIdZsHIk2uN4doom1gNsNWkr/m07B+klN/NEA==
 
 magic-string@^0.25.7:
   version "0.25.9"
@@ -2903,6 +2903,11 @@ svelte-check@^3.0.1:
     sade "^1.7.4"
     svelte-preprocess "^5.0.0"
     typescript "^4.9.4"
+
+svelte-dnd-action@^0.9.22:
+  version "0.9.22"
+  resolved "https://registry.yarnpkg.com/svelte-dnd-action/-/svelte-dnd-action-0.9.22.tgz#003eee9dddb31d8c782f6832aec8b1507fff194d"
+  integrity sha512-lOQJsNLM1QWv5mdxIkCVtk6k4lHCtLgfE59y8rs7iOM6erchbLC9hMEFYSveZz7biJV0mpg7yDSs4bj/RT/YkA==
 
 svelte-hmr@^0.15.1:
   version "0.15.1"
