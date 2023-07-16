@@ -6,8 +6,9 @@
 	import type { PageData } from './$types';
 	import CopyButton from '$lib/components/CopyButton.svelte';
 	import { goto } from '$app/navigation';
-	import { AppShell, toastStore } from '@skeletonlabs/skeleton';
+	import { toastStore } from '@skeletonlabs/skeleton';
 	import BoxSettings from './BoxSettings.svelte';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 

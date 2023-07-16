@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
-	import NavBar from '$lib/components/NavBar.svelte';
 	import type { PageData } from './$types';
 	import Container from '$lib/components/Container.svelte';
 	import { ArrowLeft, ArrowRight, Home, Undo2 } from 'lucide-svelte';
-	import { AppShell } from '@skeletonlabs/skeleton';
+	import AppShell from '$lib/components/AppShell.svelte';
 	import { goto } from '$app/navigation';
 	import { splitStringWithCloze } from '$lib/utils';
 

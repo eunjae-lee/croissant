@@ -5,7 +5,8 @@
 	import type { PageData } from './$types';
 	import { onDestroy, onMount } from 'svelte';
 	import Container from '$lib/components/Container.svelte';
-	import { AppShell, toastStore } from '@skeletonlabs/skeleton';
+	import { toastStore } from '@skeletonlabs/skeleton';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 

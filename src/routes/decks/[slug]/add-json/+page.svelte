@@ -8,8 +8,9 @@
 	import Container from '$lib/components/Container.svelte';
 	import { onDestroy, onMount } from 'svelte';
 	import Prompt from '$lib/components/Prompt.svelte';
-	import { Accordion, AccordionItem, AppShell, toastStore } from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, toastStore } from '@skeletonlabs/skeleton';
 	import { Info, Loader2 } from 'lucide-svelte';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 

@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
-	import { Info, Plus, Zap, List } from 'lucide-svelte';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import type { Deck } from '$lib/types';
 	import type { PageData } from './$types';
 	import Container from '$lib/components/Container.svelte';
-	import { AppShell } from '@skeletonlabs/skeleton';
 	import DeckCard from './DeckCard.svelte';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 	let decks: Deck[] = [];

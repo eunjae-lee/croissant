@@ -10,8 +10,9 @@
 	import Container from '$lib/components/Container.svelte';
 	import PlayWithInput from '$lib/components/PlayWithInput.svelte';
 	import { Info } from 'lucide-svelte';
-	import { AppShell, SlideToggle } from '@skeletonlabs/skeleton';
+	import { SlideToggle } from '@skeletonlabs/skeleton';
 	import { boxSettingsSchema } from '$lib/schemas';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 

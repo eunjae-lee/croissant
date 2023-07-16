@@ -6,10 +6,10 @@
 	import EditableCard from '$lib/components/EditableCard.svelte';
 	import type { Card } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { Plus, ArrowUpDown, Scaling } from 'lucide-svelte';
-	import { AppShell } from '@skeletonlabs/skeleton';
+	import { Plus, Scaling } from 'lucide-svelte';
 	import { dndzone } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 
