@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar } from '@skeletonlabs/skeleton';
 	import { MetaTags } from 'svelte-meta-tags';
 	import type { PageData } from './$types';
 	import { Globe, Twitter, Youtube } from 'lucide-svelte';
@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import { redirect } from '@sveltejs/kit';
 	import Logo from '$lib/components/Logo.svelte';
+	import AppShell from '$lib/components/AppShell.svelte';
 
 	export let data: PageData;
 
@@ -48,8 +49,8 @@
 		</AppBar>
 	</svelte:fragment>
 
-	<div class="w-full h-full flex justify-center items-center">
-		<div class="max-w-md mx-4 mt-[-20%] sm:mt-[-10%]">
+	<div class="flex justify-center items-center">
+		<div class="max-w-md mx-4 mt-16 sm:mt-32">
 			<p class="unstyled text-2xl">
 				Maximize your study with Croissant - the simple flash card app featuring spaced repetition
 				algorithm!
