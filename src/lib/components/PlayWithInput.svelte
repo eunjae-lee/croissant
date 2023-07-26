@@ -164,7 +164,7 @@
 									class:text-warning-600={clozeComparisionResults[index] ===
 										'only-different-accents'}
 									class:text-success-700={clozeComparisionResults[index] === 'equal'}
-									>{inputValues[index]}</span
+									>{inputValues[index] || '_'}</span
 								>
 							{:else}
 								<AutoResizingInput
