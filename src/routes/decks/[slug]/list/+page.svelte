@@ -16,9 +16,6 @@
 	let cards: Card[] = [];
 
 	let loading: boolean;
-	let compact = false;
-
-	$: console.log('cards', cards);
 
 	async function addNewCard() {
 		loading = true;
@@ -38,6 +35,27 @@
 		setTimeout(() => {
 			window.scrollTo(0, 0);
 		}, 100);
+	}
+
+	async function addNewCardAfterIndex(index: number) {
+		loading = true;
+		const result = await data.supabase
+			.from('cards')
+			.insert({
+				front: '',
+				back: '',
+				deck_id: data.deck.id,
+				user_id: data.deck.user_id
+			})
+			.select('*');
+
+		await data.supabase.rpc('move_card', {
+			param_card_id: result.data![0].id,
+			param_num_after: cards[index].num_order - 1
+		});
+
+		await loadCards();
+		loading = false;
 	}
 
 	async function loadCards() {
@@ -118,10 +136,6 @@
 					disabled={loading}
 					on:click={addNewCard}><Plus /><span>New Card</span></button
 				>
-
-				<button type="button" class="btn variant-soft-primary" on:click={() => (compact = !compact)}
-					><Scaling class="mr-2" />{compact ? 'Enlarge' : 'Compact'}</button
-				>
 			</div>
 			<div
 				use:dndzone={{
@@ -135,7 +149,7 @@
 				}}
 				on:consider={handleConsiderSort}
 				on:finalize={handleFinalizeSort}
-				class="scroll-wrapper mt-8 flex flex-col gap-8"
+				class="scroll-wrapper mt-8 flex flex-col"
 			>
 				{#each cards as card, index (card.id)}
 					<div animate:flip={{ duration: 300 }}>
@@ -146,8 +160,16 @@
 							{onMoveDown}
 							isFirstCard={index === 0}
 							isLastCard={index === cards.length - 1}
-							{compact}
 						/>
+						<div class="my-6 flex justify-center">
+							<button
+								class="btn variant-soft"
+								on:click={() => {
+									addNewCardAfterIndex(index);
+								}}
+								>Add +
+							</button>
+						</div>
 					</div>
 				{/each}
 			</div>

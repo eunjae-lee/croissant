@@ -10,7 +10,6 @@
 	export let onMoveDown: (card: Card) => void;
 	export let isFirstCard: boolean;
 	export let isLastCard: boolean;
-	export let compact: boolean;
 
 	async function onChange() {
 		await supabase
@@ -39,13 +38,7 @@
 </script>
 
 {#if !card.deleted}
-	<div
-		class="card"
-		class:py-4={!compact}
-		class:px-6={!compact}
-		class:py-2={compact}
-		class:px-3={compact}
-	>
+	<div class="card py-4 px-6">
 		<div class="flex justify-between items-center">
 			<div class="badge variant-ghost">Front</div>
 			<div class="flex items-center gap-2">
@@ -76,22 +69,18 @@
 			</div>
 		</div>
 		<textarea
-			class="mt-2 textarea"
-			class:text-lg={!compact}
-			class:sm:text-xl={!compact}
+			class="mt-2 textarea text-lg sm:text-xl"
 			placeholder="Front"
-			rows={compact ? 1 : 4}
+			rows={4}
 			bind:value={card.front}
 			on:change={onChange}
 			required
 		/>
-		<div class="badge variant-ghost" class:mt-6={!compact} class:mt-2={compact}>Back</div>
+		<div class="badge variant-ghost mt-6">Back</div>
 		<textarea
-			class="mt-3 textarea"
-			class:text-lg={!compact}
-			class:sm:text-xl={!compact}
+			class="mt-3 textarea text-lg sm:text-xl"
 			placeholder="Back"
-			rows={compact ? 1 : 4}
+			rows={4}
 			bind:value={card.back}
 			on:change={onChange}
 			required
