@@ -6,8 +6,7 @@
 	import EditableCard from '$lib/components/EditableCard.svelte';
 	import type { Card } from '$lib/types';
 	import { onMount } from 'svelte';
-	import { Plus, Scaling } from 'lucide-svelte';
-	import { dndzone } from 'svelte-dnd-action';
+	import { Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import AppShell from '$lib/components/AppShell.svelte';
 
@@ -137,20 +136,7 @@
 					on:click={addNewCard}><Plus /><span>New Card</span></button
 				>
 			</div>
-			<div
-				use:dndzone={{
-					items: cards,
-					flipDurationMs: 300,
-					dropTargetStyle: {
-						outline: 'rgba(211, 149, 14, 0.5) solid 2px',
-						borderRadius: '0.25rem',
-						padding: '1rem'
-					}
-				}}
-				on:consider={handleConsiderSort}
-				on:finalize={handleFinalizeSort}
-				class="scroll-wrapper mt-8 flex flex-col"
-			>
+			<div class="mt-8">
 				{#each cards as card, index (card.id)}
 					<div animate:flip={{ duration: 300 }}>
 						<EditableCard
