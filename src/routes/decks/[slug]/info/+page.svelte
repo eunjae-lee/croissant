@@ -119,7 +119,7 @@
 								<pre>{API_HOST}/api/deck/{data.deck.slug}</pre>
 							</div>
 							<div class="mr-2">
-								<CopyButton value={`${API_HOST}/api/${data.deck.slug}`} />
+								<CopyButton value={`${API_HOST}/api/deck/${data.deck.slug}`} />
 							</div>
 						</div>
 						<p class="mt-4 text-sm">Method</p>
