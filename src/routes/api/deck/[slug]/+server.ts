@@ -7,6 +7,7 @@ import { error } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async (event) => {
 	const body = await event.request.json();
+	console.log('💡 hey', body);
 	const client = createClient<Database>(PUBLIC_SUPABASE_URL, env.SUPABASE_PRIVATE_KEY);
 	const { data: decks } = await client.from('decks').select('*').eq('slug', event.params.slug);
 	if (!decks?.[0]) {
@@ -16,8 +17,9 @@ export const POST: RequestHandler = async (event) => {
 	if (event.request.headers.get('Authorization') !== `Bearer ${deck.token}`) {
 		throw error(403, '`Authorization` token is missing or wrong.');
 	}
+	const cards = Array.isArray(body.cards) ? body.cards : [body.cards];
 	await client.from('cards').insert(
-		body.cards.map((card: { front: string; back: string }) => ({
+		cards.map((card: { front: string; back: string }) => ({
 			front: card.front,
 			back: card.back,
 			deck_id: deck.id,
