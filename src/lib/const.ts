@@ -1,1 +1,1 @@
-export const API_HOST = 'https://croissant.eunjae.dev';
+export const API_HOST = 'https://croissant.day';
