@@ -7,6 +7,7 @@
 	export let onInput: (text: string) => void;
 	export let maxWidth: number | undefined = undefined;
 	export let disabled: boolean = false;
+	export let required: boolean = false;
 
 	let value: string | undefined;
 	let input: HTMLInputElement;
@@ -84,6 +85,7 @@
 		bind:this={input}
 		class="mx-1 input text-xl sm:text-2xl py-1 px-3 sm:px-4"
 		{disabled}
+		{required}
 		style="box-sizing:content-box"
 		style:width={`${inputWidth || 2}px`}
 		on:input={(event) => {

@@ -103,13 +103,11 @@
 </script>
 
 <Container>
-	<div class="mt-2 card py-4">
+	<form class="mt-2 card py-4" on:submit|preventDefault={submit}>
 		<div class="card-header flex justify-center flex-nowrap h-24 sm:h-32">
 			{#if status === 'init'}
-				<button
-					type="button"
-					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
-					on:click={submit}>Check the answer</button
+				<button type="submit" class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
+					>Check the answer</button
 				>
 			{:else if status === 'revealed'}
 				<button
@@ -174,6 +172,7 @@
 									onInput={(text) => {
 										inputValues[index] = text;
 									}}
+									required
 								/>
 							{/if}
 						{/if}
@@ -204,7 +203,7 @@
 				</div>
 			{/if}
 		</section>
-	</div>
+	</form>
 </Container>
 
 <style>
