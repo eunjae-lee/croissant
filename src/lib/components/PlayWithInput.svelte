@@ -173,6 +173,7 @@
 										inputValues[index] = text;
 									}}
 									required
+									autofocus
 								/>
 							{/if}
 						{/if}
