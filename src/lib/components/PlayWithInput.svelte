@@ -36,6 +36,8 @@
 
 	let diffResult;
 
+	let nextQuestionButton: HTMLButtonElement;
+
 	async function submit() {
 		status = 'submitting';
 		calcScore();
@@ -51,6 +53,9 @@
 		{
 			diffResult = diff.diffPatch(card.back, valueForWholeCard || '');
 		}
+		setTimeout(() => {
+			nextQuestionButton.focus();
+		}, 100);
 	}
 
 	function goToNext() {
@@ -111,6 +116,7 @@
 				>
 			{:else if status === 'revealed'}
 				<button
+					bind:this={nextQuestionButton}
 					type="button"
 					class="btn btn-lg sm:btn-xl variant-ghost-primary w-full h-full"
 					on:click={goToNext}>Next question</button
