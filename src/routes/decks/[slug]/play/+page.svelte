@@ -13,11 +13,13 @@
 	import { SlideToggle } from '@skeletonlabs/skeleton';
 	import { boxSettingsSchema } from '$lib/schemas';
 	import AppShell from '$lib/components/AppShell.svelte';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
 
 	let currentIndex = 0;
 	let hardMode = data.deck.hard_mode || false;
+	let randomPlay = data.deck.random_play || false;
 
 	let cardsToReview: Card[] = [];
 	let reviewingMistakes = false;
@@ -87,6 +89,16 @@
 			.eq('id', data.deck.id);
 	};
 
+	const updateRandomPlay = async () => {
+		await data.supabase
+			.from('decks')
+			.update({
+				random_play: randomPlay
+			})
+			.eq('id', data.deck.id);
+		invalidateAll();
+	};
+
 	const onNext = () => {
 		currentIndex += 1;
 		if (!reviewingMistakes && currentIndex === data.cards.length) {
@@ -94,7 +106,7 @@
 			reviewingMistakes = true;
 		}
 		if (reviewingMistakes && currentIndex === cardsToReview.length) {
-			new Confetti().addConfetti();
+			new Confetti().addConfetti({ confettiNumber: 10 });
 		}
 	};
 </script>
@@ -120,7 +132,13 @@
 
 				<div class="mt-8 flex justify-between items-center">
 					<div class="badge">{`${currentIndex + 1}/${totalNumberOfCards}`}</div>
-					<div>
+					<div class="flex gap-8">
+						<SlideToggle
+							name="hard-mode"
+							size="sm"
+							bind:checked={randomPlay}
+							on:change={updateRandomPlay}>Random Play</SlideToggle
+						>
 						<SlideToggle
 							name="hard-mode"
 							size="sm"

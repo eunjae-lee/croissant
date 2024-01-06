@@ -15,5 +15,14 @@ export const load: PageServerLoad = async ({ params, locals: { supabase } }) => 
 		.eq('learn', true)
 		.lte('next_play_ts', new Date().toISOString());
 
-	return { deck, cards: (cards || []).sort((a, b) => a.box - b.box) };
+	return {
+		deck,
+		cards: (cards || []).sort((a, b) => {
+			if (deck.random_play) {
+				return Math.random() - 0.5;
+			} else {
+				return a.box - b.box;
+			}
+		})
+	};
 };
