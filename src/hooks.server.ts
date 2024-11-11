@@ -1,19 +1,19 @@
-import * as SentryNode from '@sentry/node';
-import '@sentry/tracing';
+// import * as SentryNode from '@sentry/node';
+// import '@sentry/tracing';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
-if (process.env.NODE_ENV === 'production') {
-	SentryNode.init({
-		dsn: 'https://edcddf8ea1b74ea89350942bdb0c3bb8@o401874.ingest.sentry.io/4504826500218880',
-		tracesSampleRate: 1.0,
-		// Add the Http integration for tracing
-		integrations: [new SentryNode.Integrations.Http()]
-	});
+// if (process.env.NODE_ENV === 'production') {
+// 	SentryNode.init({
+// 		dsn: 'https://edcddf8ea1b74ea89350942bdb0c3bb8@o401874.ingest.sentry.io/4504826500218880',
+// 		tracesSampleRate: 1.0,
+// 		// Add the Http integration for tracing
+// 		integrations: [new SentryNode.Integrations.Http()]
+// 	});
 
-	SentryNode.setTag('svelteKit', 'server');
-}
+// 	SentryNode.setTag('svelteKit', 'server');
+// }
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
@@ -56,9 +56,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 };
 
 export const handleError = (({ error, event }) => {
-	if (process.env.NODE_ENV === 'production') {
-		SentryNode.captureException(error, { contexts: { sveltekit: { event } } });
-	}
+	// if (process.env.NODE_ENV === 'production') {
+	// 	SentryNode.captureException(error, { contexts: { sveltekit: { event } } });
+	// }
 
 	return {
 		message: (error as Error).message
